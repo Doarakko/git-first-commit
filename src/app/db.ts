@@ -16,9 +16,9 @@ export class GitHubRepository {
 					r.id,
 					r.platform_name as platformName,
 					r.username,
-					r.repository_name as repositoryName,
+					r.name,
 					r.owner_image_url as ownerImageUrl,
-					r.repository_description as repositoryDescription,
+					r.description,
 					r.created_at as createdAt,
 					r.updated_at as updatedAt,
 					c.id as commitId,
@@ -35,7 +35,7 @@ export class GitHubRepository {
 				FROM repositories r
 				LEFT JOIN commits c ON r.id = c.repository_id
 				WHERE r.username = ?
-					AND r.repository_name = ?
+					AND r.name = ?
 				ORDER BY c.commit_date ASC`
 			)
 			.bind(username, repositoryName)
@@ -74,9 +74,9 @@ export class GitHubRepository {
 						id,
 						platform_name,
 						username,
-						repository_name,
+						name,
 						owner_image_url,
-						repository_description
+						description
 					) VALUES (?, ?, ?, ?, ?, ?)`
 				).bind(
 					repositoryId,
@@ -132,7 +132,9 @@ export class GitHubRepository {
 					r.id,
 					r.platform_name as platformName,
 					r.username,
-					r.repository_name as repositoryName,
+					r.name as name,
+					r.owner_image_url as ownerImageUrl,
+					r.description,
 					r.created_at as createdAt,
 					r.updated_at as updatedAt
 				FROM repositories r
