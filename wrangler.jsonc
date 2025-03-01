@@ -16,15 +16,18 @@
 		}
 	],
 	"env": {
-		"local": {
-			"vars": {
-				"PUBLIC_URL": "http://localhost:3000"
-			}
-		},
 		"production": {
 			"vars": {
 				"PUBLIC_URL": "https://git-first-commit.pages.dev"
-			}
+			},
+			"d1_databases": [
+				{
+					"binding": "DB",
+					"database_name": "git-first-commit",
+					"database_id": "416c4938-bcc7-4acb-82aa-9161cd1e9d56",
+					"migrations_dir": "./migrations"
+				}
+			]
 		}
 	}
 }
