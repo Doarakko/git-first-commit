@@ -15,7 +15,16 @@
 			"migrations_dir": "./migrations"
 		}
 	],
-	"vars": {
-		"PUBLIC_URL": "https://git-first-commit.pages.dev"
+	"env": {
+		"local": {
+			"vars": {
+				"PUBLIC_URL": "http://localhost:3000"
+			}
+		},
+		"production": {
+			"vars": {
+				"PUBLIC_URL": "https://git-first-commit.pages.dev"
+			}
+		}
 	}
 }
