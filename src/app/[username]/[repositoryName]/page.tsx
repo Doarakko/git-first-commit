@@ -31,7 +31,14 @@ export default async function Page(props: {
 	return (
 		<div className="p-4">
 			<h1 className="text-2xl font-bold mb-4">
-				{repository.username}/{repository.repositoryName}
+				<a
+					href={`https://${repository.platformName}.com/${repository.username}/${repository.repositoryName}`}
+					target="_blank"
+					rel="noopener noreferrer"
+					className="text-blue-500 hover:underline"
+				>
+					{repository.username}/{repository.repositoryName}
+				</a>
 			</h1>
 			<div className="space-y-4">
 				{commits.map((commit) => (
