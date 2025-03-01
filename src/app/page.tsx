@@ -74,7 +74,7 @@ export default function Home() {
 						{repositories.map((repo) => (
 							<a
 								key={repo.id}
-								href={`/${repo.username}/${repo.repositoryName}`}
+								href={`/${repo.username}/${repo.name}`}
 								className="block bg-white shadow rounded-lg hover:shadow-md transition-shadow"
 							>
 								<div className="p-4">
@@ -85,7 +85,7 @@ export default function Home() {
 											className="w-8 h-8 rounded-full"
 										/>
 										<span className="text-gray-900 font-medium truncate">
-											{repo.username}/{repo.repositoryName}
+											{repo.username}/{repo.name}
 										</span>
 									</div>
 									{repo.description && (

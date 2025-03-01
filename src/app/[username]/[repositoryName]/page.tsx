@@ -32,12 +32,12 @@ export default async function Page(props: {
 		<div className="p-4">
 			<h1 className="text-2xl font-bold mb-4">
 				<a
-					href={`https://${repository.platformName}.com/${repository.username}/${repository.repositoryName}`}
+					href={`https://${repository.platformName}.com/${repository.username}/${repository.name}`}
 					target="_blank"
 					rel="noopener noreferrer"
 					className="text-blue-500 hover:underline"
 				>
-					{repository.username}/{repository.repositoryName}
+					{repository.username}/{repository.name}
 				</a>
 			</h1>
 			<div className="space-y-4">

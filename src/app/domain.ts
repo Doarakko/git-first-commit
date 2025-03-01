@@ -2,7 +2,7 @@ export type Repository = {
     id: string;
     platformName: string;
     username: string;
-    repositoryName: string;
+    name: string;
     description: string;
     ownerImageUrl: string;
     createdAt: string;
