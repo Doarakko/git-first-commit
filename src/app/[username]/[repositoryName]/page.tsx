@@ -29,7 +29,7 @@ export default async function Page(props: {
 	const { repository, commits } = json;
 
 	return (
-		<div className="p-4">
+		<div className="min-h-screen bg-gray-50 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
 			<h1 className="text-2xl font-bold mb-4">
 				<a
 					href={`https://${repository.platformName}.com/${repository.username}/${repository.name}`}
