@@ -125,7 +125,7 @@ export class GitHubRepository {
 		}
 	}
 
-	public async GetRepositories(): Promise<Repository[]> {
+	public async GetRepositories(limit: number): Promise<Repository[]> {
 		const { results } = await this.db
 			.prepare(
 				`SELECT 
@@ -138,9 +138,10 @@ export class GitHubRepository {
 					r.created_at as createdAt,
 					r.updated_at as updatedAt
 				FROM repositories r
-				ORDER BY r.created_at DESC
-				LIMIT 10`
+				ORDER BY RANDOM()
+				LIMIT ?`
 			)
+			.bind(limit)
 			.all();
 
 		if (!results?.length) return [];
