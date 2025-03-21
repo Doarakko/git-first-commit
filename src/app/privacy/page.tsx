@@ -1,7 +1,7 @@
 const Privacy = () => {
 	return (
 		<>
-			<div className="pt-8">
+			<div className="min-h-screen bg-gray-50 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
 				<h1 className="text-center text-2xl">Privacy Policy</h1>
 				<div className="pt-4 pl-8 pr-8 leading-8">
 					This site uses Google Analytics, a traffic analysis tool by Google.

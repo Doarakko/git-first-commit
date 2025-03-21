@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Repository } from "./domain";
+import "./globals.css";
 
 const githubRepositoryRegex =
 	/^https?:\/\/(www\.)?github\.com\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9._-]+)(\/|\.git)?$/;
@@ -9,6 +10,7 @@ const githubRepositoryRegex =
 export default function Home() {
 	const router = useRouter();
 	const [repositories, setRepositories] = useState<Repository[]>([]);
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		const fetchRepositories = async () => {
@@ -28,7 +30,9 @@ export default function Home() {
 		fetchRepositories();
 	}, []);
 
-	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+	const handleKeyDown = async (
+		event: React.KeyboardEvent<HTMLInputElement>,
+	) => {
 		if (event.key !== "Enter") {
 			return;
 		}
@@ -41,8 +45,30 @@ export default function Home() {
 
 		const username = match[2];
 		const repositoryName = match[3];
+
+		setLoading(true);
+		await fetch(
+			`/api/usernames/${username}/repositories/${repositoryName}/commits`,
+			{
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			},
+		);
+		setLoading(false);
+
 		router.replace(`${username}/${repositoryName}`);
 	};
+
+	if (loading) {
+		return (
+			<div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+				<div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32 mb-4" />
+				<h1 className="text-2xl font-bold mb-4">Searching...</h1>
+			</div>
+		);
+	}
 
 	return (
 		<div className="min-h-screen bg-gray-50 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
