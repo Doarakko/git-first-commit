@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
 	env: {
 		GITHUB_TOKEN: process.env.GITHUB_TOKEN,
 		PUBLIC_URL: process.env.PUBLIC_URL,
+		ENV: process.env.ENV,
 	},
 };
 

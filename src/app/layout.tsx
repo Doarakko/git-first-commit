@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -16,6 +17,9 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="en">
+			{process.env.ENV === "production" && (
+				<GoogleAnalytics gaId="G-GKR0S4585R" />
+			)}
 			<body className={inter.className}>
 				<div className="relative min-h-screen">
 					<header className="py-4 px-6">
