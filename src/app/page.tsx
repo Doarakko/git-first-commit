@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Repository } from "./domain";
 import "./globals.css";
+import RepositoryCardList from "./components/RepositoryCardList";
 
 const githubRepositoryRegex =
 	/^https?:\/\/(www\.)?github\.com\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9._-]+)(\/|\.git)?$/;
@@ -47,7 +48,7 @@ export default function Home() {
 		const repositoryName = match[3];
 
 		setLoading(true);
-		await fetch(
+		const response = await fetch(
 			`/api/usernames/${username}/repositories/${repositoryName}/commits`,
 			{
 				method: "GET",
@@ -57,6 +58,10 @@ export default function Home() {
 			},
 		);
 		setLoading(false);
+
+		if (!response.ok) {
+			return;
+		}
 
 		router.replace(`${username}/${repositoryName}`);
 	};
@@ -92,41 +97,7 @@ export default function Home() {
 			</div>
 
 			{repositories.length > 0 && (
-				<div className="max-w-6xl w-full mt-12">
-					<h2 className="text-lg font-semibold mb-4 text-center">
-						Recent Repositories
-					</h2>
-					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-						{repositories.map((repo) => (
-							<a
-								key={repo.id}
-								href={`/${repo.username}/${repo.name}`}
-								className="block bg-white shadow rounded-lg hover:shadow-md transition-shadow"
-							>
-								<div className="p-4">
-									<div className="flex items-center space-x-3 mb-3">
-										<img
-											src={repo.ownerImageUrl}
-											alt={`${repo.username}'s avatar`}
-											className="w-8 h-8 rounded-full"
-										/>
-										<span className="text-gray-900 font-medium truncate">
-											{repo.username}/{repo.name}
-										</span>
-									</div>
-									{repo.description && (
-										<p className="text-sm text-gray-500 line-clamp-2 mb-3">
-											{repo.description}
-										</p>
-									)}
-									<div className="text-xs text-gray-400">
-										{new Date(repo.createdAt).toLocaleDateString()}
-									</div>
-								</div>
-							</a>
-						))}
-					</div>
-				</div>
+				<RepositoryCardList repositories={repositories} />
 			)}
 		</div>
 	);
