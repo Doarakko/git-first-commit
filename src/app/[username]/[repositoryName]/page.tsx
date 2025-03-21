@@ -1,5 +1,6 @@
 import type { Commit, Repository } from "@/app/domain";
 import RepositoryCardList from "../../components/RepositoryCardList";
+import CommitCard from "../../components/CommitCard";
 
 export const runtime = "edge";
 
@@ -42,49 +43,24 @@ export default async function Page(props: {
 
 	return (
 		<div className="min-h-screen bg-gray-50 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
-			<h1 className="text-2xl font-bold mb-4">
+			<h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
+				<img
+					src={repository.ownerImageUrl}
+					alt={`${repository.username}'s avatar`}
+					className="w-8 h-8 rounded-full"
+				/>
 				<a
 					href={`https://${repository.platformName}.com/${repository.username}/${repository.name}`}
 					target="_blank"
 					rel="noopener noreferrer"
-					className="text-blue-500 hover:underline"
+					className="hover:underline"
 				>
 					{repository.username}/{repository.name}
 				</a>
 			</h1>
 			<div className="space-y-4">
 				{commits.map((commit) => (
-					<div key={commit.url} className="border p-4 rounded-lg">
-						<div className="flex items-center gap-4 mb-2">
-							<img
-								src={commit.authorImageUrl}
-								alt={commit.authorId}
-								className="w-10 h-10 rounded-full"
-							/>
-							<div>
-								<a
-									href={commit.authorUrl}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="text-blue-500 hover:underline"
-								>
-									{commit.authorId}
-								</a>
-								<div className="text-sm text-gray-500">
-									{new Date(commit.commitDate).toLocaleDateString()}
-								</div>
-							</div>
-						</div>
-						<p className="text-gray-700">{commit.message}</p>
-						<a
-							href={commit.url}
-							target="_blank"
-							rel="noopener noreferrer"
-							className="text-sm text-blue-500 hover:underline mt-2 inline-block"
-						>
-							View commit →
-						</a>
-					</div>
+					<CommitCard key={commit.url} commit={commit} />
 				))}
 			</div>
 			{repositories.length > 0 && (
