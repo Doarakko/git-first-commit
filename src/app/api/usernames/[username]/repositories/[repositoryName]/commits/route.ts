@@ -53,7 +53,7 @@ export async function GET(
 			firstCommits.slice(0, 5).map(commit => ({
 				url: commit.html_url,
 				message: commit.commit.message,
-				authorId: commit.author?.id?.toString() || "",
+				authorId: commit.author?.login?.toString() || "",
 				authorUrl: commit.author?.html_url || "",
 				authorImageUrl: commit.author?.avatar_url || "",
 				commitDate: new Date(commit.commit.committer?.date || ""),
