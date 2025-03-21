@@ -8,6 +8,8 @@ export const runtime = 'edge'
 // https://docs.github.com/ja/rest/commits/commits?apiVersion=2022-11-28#list-commits
 const startDate = new Date(Date.UTC(1970, 0, 1));
 
+const defaultCommitLimit = 3;
+
 export async function GET(
 	request: Request,
 ) {
@@ -50,7 +52,7 @@ export async function GET(
 			repositoryName,
 			repository.owner.avatar_url,
 			repository.description || "",
-			firstCommits.slice(0, 5).map(commit => ({
+			firstCommits.slice(0, defaultCommitLimit).map(commit => ({
 				url: commit.html_url,
 				message: commit.commit.message,
 				authorId: commit.author?.login?.toString() || "",
@@ -65,7 +67,7 @@ export async function GET(
 			username,
 			repositoryName,
 			firstCommitDate: boundaryDate,
-			commits: firstCommits.slice(0, 5)
+			commits: firstCommits.slice
 		});
 
 	} catch (error) {
