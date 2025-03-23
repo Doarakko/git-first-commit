@@ -87,7 +87,7 @@ export default function Home() {
 
 	if (loading) {
 		return (
-			<div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+			<div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
 				<div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32 mb-4" />
 				<h1 className="text-2xl font-bold mb-4">Loading...</h1>
 				<div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-200">
@@ -101,23 +101,23 @@ export default function Home() {
 	}
 
 	return (
-		<div className="min-h-screen bg-gray-50 flex flex-col items-center py-4 px-4 sm:px-6 lg:px-8">
+		<div className="min-h-screen bg-gray-100 flex flex-col items-center py-4 px-4 sm:px-6 lg:px-8">
 			<div className="max-w-md w-full text-left">
 				<div className="mt-8">
-					<p className="mt-2 text-base pb-2 pl-2">
+					<p className="mt-2 text-base pb-2 pl-2 text-gray-700">
 						Find the first commit of any GitHub repository
 					</p>
 					<input
 						type="url"
 						placeholder="https://github.com/Doarakko/git-first-commit"
 						onKeyDown={handleKeyDown}
-						className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+						className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-700 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
 					/>
 				</div>
 			</div>
 
 			<div>
-				<h2 className="text-lg font-semibold pt-4">Featured</h2>
+				<h2 className="text-lg font-semibold pt-4 text-gray-700">Featured</h2>
 				{repositories.length > 0 && (
 					<RepositoryCardList repositories={repositories} />
 				)}

@@ -19,7 +19,7 @@ const RepositoryCard: React.FC<RepositoryCardProps> = ({ repo }) => {
 						alt={`${repo.username}'s avatar`}
 						className="w-8 h-8 rounded-full"
 					/>
-					<span className="text-gray-900 font-medium truncate">
+					<span className="text-gray-700 font-medium truncate">
 						{repo.username}/{repo.name}
 					</span>
 				</div>
