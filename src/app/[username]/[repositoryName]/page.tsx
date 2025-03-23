@@ -98,6 +98,18 @@ export default async function Page(props: {
 					<CommitCard key={commit.url} commit={commit} />
 				))}
 			</div>
+			<p className="text-gray-500 mb-4">
+				If you find any errors in your search results, please report them via{" "}
+				<a
+					href="https://github.com/Doarakko/git-first-commit/issues/10"
+					target="_blank"
+					rel="noopener noreferrer"
+					className="hover:text-gray-700"
+				>
+					GitHub issue
+				</a>
+				.
+			</p>
 			<div>
 				<h2 className="text-xl font-bold">Let's deepdive!</h2>
 				<div className=" bg-black text-white p-4 rounded-md shadow-md min-w-[300px] sm:min-w-[400px] md:min-w-[500px] lg:min-w-[600px]">
