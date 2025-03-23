@@ -104,7 +104,7 @@ export class GitHubRepository {
 				) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
 			);
 
-			for (let i = commits.length - 1; i >= 0; i--) {
+			for (let i = 0; i < commits.length; i++) {
 				const commit = commits[i];
 
 				batch.push(
@@ -128,7 +128,7 @@ export class GitHubRepository {
 		}
 	}
 
-	public async GetRandomRepositories(limit: number, minimumStarCount = 2): Promise<Repository[]> {
+	public async GetRandomRepositories(limit: number, minimumStarCount = 10): Promise<Repository[]> {
 		const { results } = await this.db
 			.prepare(
 				`SELECT 

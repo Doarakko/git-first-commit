@@ -1,6 +1,11 @@
 import { Octokit } from "@octokit/core";
 import type { Endpoints } from "@octokit/types";
 
+type findBoundaryDateOutput = {
+	boundaryDate: Date;
+	count: number;
+};
+
 export class GitHub {
 	private octokit: Octokit;
 
@@ -10,10 +15,12 @@ export class GitHub {
 
 	private zeroFillDate(t: Date): Date {
 		return new Date(
-			t.getFullYear(),
-			t.getMonth(),
-			t.getDate(),
-			0, 0, 0, 0,
+			Date.UTC(
+				t.getFullYear(),
+				t.getMonth(),
+				t.getDate(),
+				0, 0, 0, 0,
+			)
 		);
 	}
 
@@ -45,7 +52,8 @@ export class GitHub {
 			per_page: 100,
 		});
 
-		return response.data;
+		// Commits are returned in descending order, so reverse it
+		return response.data.reverse();
 	}
 
 	public async getRepository(
@@ -65,7 +73,7 @@ export class GitHub {
 		repositoryName: string,
 		start: Date,
 		end: Date
-	): Promise<Date> {
+	): Promise<findBoundaryDateOutput> {
 		let count = 0;
 		let startDate = start;
 		let endDate = end;
@@ -89,6 +97,9 @@ export class GitHub {
 			console.log("count", count, startDate, endDate);
 		}
 
-		return startDate;
+		return {
+			boundaryDate: startDate,
+			count,
+		};
 	}
 }

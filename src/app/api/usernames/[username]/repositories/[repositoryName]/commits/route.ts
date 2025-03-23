@@ -41,7 +41,7 @@ export async function GET(
 		}
 
 		const endDate = new Date();
-		const boundaryDate = await github.findBoundaryDate(
+		const { boundaryDate } = await github.findBoundaryDate(
 			username,
 			repositoryName,
 			startDate,
