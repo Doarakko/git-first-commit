@@ -126,7 +126,7 @@ export default function Home() {
 						placeholder="https://github.com/Doarakko/git-first-commit"
 						onKeyDown={handleKeyDown}
 						onFocus={() => setError(null)}
-						className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-700 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+						className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-700 rounded-md focus:outline-hidden focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm bg-white"
 					/>
 					{error && <div className="text-red-500 text-sm mt-2">{error}</div>}
 				</div>
