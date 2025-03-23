@@ -12,6 +12,7 @@ export default function Home() {
 	const router = useRouter();
 	const [repositories, setRepositories] = useState<Repository[]>([]);
 	const [loading, setLoading] = useState(false);
+	const [progress, setProgress] = useState(0);
 
 	useEffect(() => {
 		const fetchRepositories = async () => {
@@ -30,6 +31,24 @@ export default function Home() {
 
 		fetchRepositories();
 	}, []);
+
+	useEffect(() => {
+		if (loading) {
+			const interval = setInterval(() => {
+				setProgress((oldProgress) => {
+					if (oldProgress === 100) {
+						clearInterval(interval);
+						return 100;
+					}
+					const diff = Math.random() * 10;
+					return Math.min(oldProgress + diff, 100);
+				});
+			}, 300);
+			return () => {
+				clearInterval(interval);
+			};
+		}
+	}, [loading]);
 
 	const handleKeyDown = async (
 		event: React.KeyboardEvent<HTMLInputElement>,
@@ -70,7 +89,13 @@ export default function Home() {
 		return (
 			<div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
 				<div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32 mb-4" />
-				<h1 className="text-2xl font-bold mb-4">Searching...</h1>
+				<h1 className="text-2xl font-bold mb-4">Loading...</h1>
+				<div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-200">
+					<div
+						className="bg-blue-600 h-2.5 rounded-full"
+						style={{ width: `${progress}%` }}
+					/>
+				</div>
 			</div>
 		);
 	}
