@@ -88,8 +88,7 @@ export default function Home() {
 	if (loading) {
 		return (
 			<div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-				<div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32 mb-4" />
-				<h1 className="text-2xl font-bold mb-4">Loading...</h1>
+				<h1 className="text-2xl font-bold mb-4">Searching...</h1>
 				<div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-200">
 					<div
 						className="bg-blue-600 h-2.5 rounded-full"
