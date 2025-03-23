@@ -32,6 +32,14 @@ export async function GET(
 			return NextResponse.json(response);
 		}
 
+		const repository = await github.getRepository(username, repositoryName);
+		if (!repository) {
+			return NextResponse.json(
+				{ error: "Repository not found" },
+				{ status: 404 }
+			);
+		}
+
 		const endDate = new Date();
 		const boundaryDate = await github.findBoundaryDate(
 			username,
@@ -45,7 +53,6 @@ export async function GET(
 			repositoryName,
 			boundaryDate
 		);
-		const repository = await github.getRepository(username, repositoryName);
 
 		await githubRepository.AddRepositoryWithCommits(
 			username,

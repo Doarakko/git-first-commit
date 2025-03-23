@@ -13,6 +13,7 @@ export default function Home() {
 	const [repositories, setRepositories] = useState<Repository[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [progress, setProgress] = useState(0);
+	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
 		const fetchRepositories = async () => {
@@ -60,9 +61,13 @@ export default function Home() {
 		const url = event.currentTarget.value;
 		const match = url.match(githubRepositoryRegex);
 		if (!match) {
+			setError(
+				"Invalid URL format. Please enter a valid GitHub repository URL.",
+			);
 			return;
 		}
 
+		setError(null);
 		const username = match[2];
 		const repositoryName = match[3];
 
@@ -78,20 +83,30 @@ export default function Home() {
 		);
 		setLoading(false);
 
+		if (response.status === 404) {
+			setError(
+				"Repository not found. Please enter a valid GitHub repository URL.",
+			);
+			return;
+		}
 		if (!response.ok) {
+			setError(
+				"Failed to search fisrt commit due to exceeding the GitHub API rate limit. Please try again after about 30 minutes.",
+			);
 			return;
 		}
 
+		setError(null);
 		router.replace(`${username}/${repositoryName}`);
 	};
 
 	if (loading) {
 		return (
-			<div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-				<h1 className="text-2xl font-bold mb-4">Searching...</h1>
+			<div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 text-gray-700">
+				<h1 className="text-2xl mb-4">Searching...</h1>
 				<div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-200">
 					<div
-						className="bg-blue-600 h-2.5 rounded-full"
+						className="bg-blue-400 h-2.5 rounded-full"
 						style={{ width: `${progress}%` }}
 					/>
 				</div>
@@ -110,8 +125,10 @@ export default function Home() {
 						type="url"
 						placeholder="https://github.com/Doarakko/git-first-commit"
 						onKeyDown={handleKeyDown}
+						onFocus={() => setError(null)}
 						className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-700 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
 					/>
+					{error && <div className="text-red-500 text-sm mt-2">{error}</div>}
 				</div>
 			</div>
 
