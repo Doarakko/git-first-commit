@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import type { Repository } from "./domain";
 import "./globals.css";
-import RepositoryCardList from "./components/RepositoryCardList";
+import RepositoryCardList from "@/components/RepositoryCardList";
+import type { Repository } from "@/types";
 
 const githubRepositoryRegex =
 	/^https?:\/\/(www\.)?github\.com\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9._-]+)(\/|\.git)?$/;

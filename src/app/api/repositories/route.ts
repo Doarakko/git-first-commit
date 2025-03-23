@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { GitHubRepository } from "@/app/db";
+import { GitHubRepository } from "@/db";
 import { getRequestContext } from '@cloudflare/next-on-pages'
 
 export const runtime = 'edge'

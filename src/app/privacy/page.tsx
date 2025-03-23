@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DEFAULT_METADATA } from "../constants";
+import { DEFAULT_METADATA } from "@/constants";
 
 export const metadata: Metadata = {
 	...DEFAULT_METADATA,

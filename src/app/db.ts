@@ -1,4 +1,4 @@
-import type { Repository, Commit } from "./domain";
+import type { Repository, Commit } from "@/types";
 
 export class GitHubRepository {
 	private db: D1Database;
@@ -44,8 +44,8 @@ export class GitHubRepository {
 		if (!results?.length) return null;
 
 		return {
-			repository: results[0] as Repository,
-			commits: results.map(row => row as Commit)
+			repository: results[0] as unknown as Repository,
+			commits: results.map(row => row as unknown as Commit)
 		};
 	}
 
@@ -150,6 +150,6 @@ export class GitHubRepository {
 
 		if (!results?.length) return [];
 
-		return results.map(row => row as Repository);
+		return results.map(row => row as unknown as Repository);
 	}
 }

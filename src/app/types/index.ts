@@ -1,4 +1,4 @@
-export type Repository = {
+export interface Repository {
     id: string;
     platformName: string;
     username: string;
@@ -9,7 +9,7 @@ export type Repository = {
     commits: Commit[];
 };
 
-export type Commit = {
+export interface Commit {
     repositoryId: string;
     order: number;
     url: string;

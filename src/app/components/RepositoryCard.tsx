@@ -1,5 +1,5 @@
 import type React from "react";
-import type { Repository } from "@/app/domain";
+import type { Repository } from "@/types";
 
 interface RepositoryCardProps {
 	repo: Repository;

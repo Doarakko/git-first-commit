@@ -1,6 +1,6 @@
 import type React from "react";
-import type { Repository } from "@/app/domain";
-import RepositoryCard from "../components/RepositoryCard";
+import type { Repository } from "@/types";
+import RepositoryCard from "@/components/RepositoryCard";
 
 interface RepositoryCardListProps {
 	repositories: Repository[];

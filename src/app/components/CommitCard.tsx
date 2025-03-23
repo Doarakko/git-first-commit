@@ -1,5 +1,5 @@
 import type React from "react";
-import type { Commit } from "@/app/domain";
+import type { Commit } from "@/types";
 
 interface CommitCardProps {
 	commit: Commit;

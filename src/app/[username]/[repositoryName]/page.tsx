@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import type { Commit, Repository } from "@/app/domain";
-import RepositoryCardList from "../../components/RepositoryCardList";
-import CommitCard from "../../components/CommitCard";
-import { DEFAULT_METADATA } from "../../constants";
+import type { Commit, Repository } from "@/types";
+import RepositoryCardList from "@/components/RepositoryCardList";
+import CommitCard from "@/components/CommitCard";
+import { DEFAULT_METADATA } from "@/constants";
 
 export const runtime = "edge";
 
