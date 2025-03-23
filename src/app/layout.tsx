@@ -1,13 +1,18 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { DEFAULT_METADATA } from "./constants";
 
 const inter = Inter({ subsets: ["latin"] });
 
+export const viewport: Viewport = {
+	width: "device-width",
+	initialScale: 1,
+};
+
 export const metadata: Metadata = {
-	title: "Git First Commit",
-	description: "Find the first commit of any GitHub repository",
+	...DEFAULT_METADATA,
 };
 
 export default function RootLayout({
@@ -24,8 +29,8 @@ export default function RootLayout({
 				<div className="relative min-h-screen">
 					<header className="py-4 px-6">
 						<div className="flex justify-between items-center">
-							<h1 className="text-xl font-semibold">
-								<a href="/" className="hover:text-gray-700">
+							<h1 className="text-xl font-semibold text-gray-700">
+								<a href="/" className="hover:text-gray-900">
 									Git First Commit
 								</a>
 							</h1>

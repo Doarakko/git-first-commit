@@ -1,8 +1,42 @@
+import type { Metadata } from "next";
 import type { Commit, Repository } from "@/app/domain";
 import RepositoryCardList from "../../components/RepositoryCardList";
 import CommitCard from "../../components/CommitCard";
+import { DEFAULT_METADATA } from "../../constants";
 
 export const runtime = "edge";
+
+type Props = {
+	params: Promise<{ username: string; repositoryName: string }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+	const { username, repositoryName } = await params;
+	const response = await fetch(
+		`${process.env.PUBLIC_URL}/api/usernames/${username}/repositories/${repositoryName}/commits`,
+		{
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		},
+	);
+	if (!response.ok) {
+		return DEFAULT_METADATA;
+	}
+	const json: { repository: Repository } = await response.json();
+
+	return {
+		...DEFAULT_METADATA,
+		title: `${username}/${repositoryName}`,
+		description: `This is the first commit of ${username}/${repositoryName}. ${username}/${repositoryName} is ${json.repository.description}`,
+		openGraph: {
+			...DEFAULT_METADATA.openGraph,
+			title: `${username}/${repositoryName}`,
+			description: `This is the first commit of ${username}/${repositoryName}. ${username}/${repositoryName} is ${json.repository.description}`,
+		},
+	};
+}
 
 export default async function Page(props: {
 	params: Promise<{ username: string; repositoryName: string }>;
@@ -42,7 +76,7 @@ export default async function Page(props: {
 	const { repository, commits } = json;
 
 	return (
-		<div className="min-h-screen bg-gray-50 flex flex-col py-12 px-4 sm:px-6 lg:px-8">
+		<div className="min-h-screen bg-gray-100 flex flex-col py-12 px-4 sm:px-6 lg:px-8 text-gray-700">
 			<h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
 				<img
 					src={repository.ownerImageUrl}
@@ -53,7 +87,7 @@ export default async function Page(props: {
 					href={`https://${repository.platformName}.com/${repository.username}/${repository.name}`}
 					target="_blank"
 					rel="noopener noreferrer"
-					className="hover:underline"
+					className="hover:text-gray-900"
 				>
 					{repository.username}/{repository.name}
 				</a>

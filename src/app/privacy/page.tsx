@@ -1,7 +1,15 @@
+import type { Metadata } from "next";
+import { DEFAULT_METADATA } from "../constants";
+
+export const metadata: Metadata = {
+	...DEFAULT_METADATA,
+	robots: "noindex, nofollow",
+};
+
 const Privacy = () => {
 	return (
 		<>
-			<div className="min-h-screen bg-gray-50 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
+			<div className="min-h-screen bg-gray-100 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8 text-gray-700">
 				<h1 className="text-center text-2xl">Privacy Policy</h1>
 				<div className="pt-4 pl-8 pr-8 leading-8">
 					This site uses Google Analytics, a traffic analysis tool by Google.
