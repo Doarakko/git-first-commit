@@ -58,6 +58,7 @@ export default async function Page(props: {
 					{repository.username}/{repository.name}
 				</a>
 			</h1>
+			<p className="text-gray-500 mb-4">{repository.description}</p>
 			<div className="space-y-4">
 				{commits.map((commit) => (
 					<CommitCard key={commit.url} commit={commit} />
