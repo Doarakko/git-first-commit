@@ -42,7 +42,7 @@ export default async function Page(props: {
 	const { repository, commits } = json;
 
 	return (
-		<div className="min-h-screen bg-gray-50 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
+		<div className="min-h-screen bg-gray-50 flex flex-col py-12 px-4 sm:px-6 lg:px-8">
 			<h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
 				<img
 					src={repository.ownerImageUrl}
@@ -63,9 +63,23 @@ export default async function Page(props: {
 					<CommitCard key={commit.url} commit={commit} />
 				))}
 			</div>
-			{repositories.length > 0 && (
-				<RepositoryCardList repositories={repositories} />
-			)}
+			<div>
+				<h2 className="text-xl font-bold">Let's deepdive!</h2>
+				<div className=" bg-black text-white p-4 rounded-md shadow-md min-w-[300px] sm:min-w-[400px] md:min-w-[500px] lg:min-w-[600px]">
+					<pre className="whitespace-pre-wrap">
+						<code>
+							git clone https://github.com/{repository.username}/
+							{repository.name} && cd {repository.name} && git log --reverse
+						</code>
+					</pre>
+				</div>
+			</div>
+			<div>
+				<h2 className="text-lg font-semibold pt-4">Featured</h2>
+				{repositories.length > 0 && (
+					<RepositoryCardList repositories={repositories} />
+				)}
+			</div>
 		</div>
 	);
 }

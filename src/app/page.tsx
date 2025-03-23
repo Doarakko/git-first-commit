@@ -91,9 +91,12 @@ export default function Home() {
 				</div>
 			</div>
 
-			{repositories.length > 0 && (
-				<RepositoryCardList repositories={repositories} />
-			)}
+			<div>
+				<h2 className="text-lg font-semibold pt-4">Featured</h2>
+				{repositories.length > 0 && (
+					<RepositoryCardList repositories={repositories} />
+				)}
+			</div>
 		</div>
 	);
 }

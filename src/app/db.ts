@@ -101,7 +101,7 @@ export class GitHubRepository {
 				) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
 			);
 
-			for (let i = Math.min(commits.length, 5) - 1; i >= 0; i--) {
+			for (let i = commits.length - 1; i >= 0; i--) {
 				const commit = commits[i];
 
 				batch.push(
