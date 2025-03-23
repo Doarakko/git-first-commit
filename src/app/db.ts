@@ -54,6 +54,7 @@ export class GitHubRepository {
 		repositoryName: string,
 		ownerImageUrl: string,
 		repositoryDescription: string,
+		starCount: number,
 		commits: {
 			url: string;
 			message: string;
@@ -76,8 +77,9 @@ export class GitHubRepository {
 						username,
 						name,
 						owner_image_url,
-						description
-					) VALUES (?, ?, ?, ?, ?, ?)`
+						description,
+						star_count
+					) VALUES (?, ?, ?, ?, ?, ?, ?)`
 				).bind(
 					repositoryId,
 					"github",
@@ -85,6 +87,7 @@ export class GitHubRepository {
 					repositoryName,
 					ownerImageUrl,
 					repositoryDescription,
+					starCount,
 				)
 			);
 
@@ -125,7 +128,7 @@ export class GitHubRepository {
 		}
 	}
 
-	public async GetRepositories(limit: number): Promise<Repository[]> {
+	public async GetRandomRepositories(limit: number, minimumStarCount = 2): Promise<Repository[]> {
 		const { results } = await this.db
 			.prepare(
 				`SELECT 
@@ -138,10 +141,11 @@ export class GitHubRepository {
 					r.created_at as createdAt,
 					r.updated_at as updatedAt
 				FROM repositories r
+				WHERE r.star_count >= ?
 				ORDER BY RANDOM()
 				LIMIT ?`
 			)
-			.bind(limit)
+			.bind(minimumStarCount, limit)
 			.all();
 
 		if (!results?.length) return [];

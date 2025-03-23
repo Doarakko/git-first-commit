@@ -8,6 +8,7 @@ CREATE TABLE repositories (
   name TEXT NOT NULL,
   description TEXT NOT NULL,
   owner_image_url TEXT NOT NULL,
+  star_count INTEGER NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 

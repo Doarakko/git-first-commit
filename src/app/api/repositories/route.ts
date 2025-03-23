@@ -19,7 +19,7 @@ export async function GET(request: Request) {
         }
 
         const githubRepository = new GitHubRepository(getRequestContext().env.DB);
-        const repositories = await githubRepository.GetRepositories(limit);
+        const repositories = await githubRepository.GetRandomRepositories(limit);
 
         return NextResponse.json({ repositories });
     } catch (error) {
