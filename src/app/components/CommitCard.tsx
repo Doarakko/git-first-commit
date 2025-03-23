@@ -9,7 +9,7 @@ const CommitCard: React.FC<CommitCardProps> = ({ commit }) => {
 	return (
 		<div className="border p-4 rounded-lg min-w-[300px] sm:min-w-[400px] md:min-w-[500px] lg:min-w-[600px] bg-white">
 			<div className="flex items-center gap-4 mb-2">
-				{commit.authorImageUrl && commit.authorId && (
+				{commit.authorImageUrl && commit.authorId ? (
 					<>
 						<img
 							src={commit.authorImageUrl}
@@ -26,6 +26,11 @@ const CommitCard: React.FC<CommitCardProps> = ({ commit }) => {
 								{commit.authorId}
 							</a>
 						</div>
+					</>
+				) : (
+					<>
+						<div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center" />
+						<div>Unknown</div>
 					</>
 				)}
 			</div>
