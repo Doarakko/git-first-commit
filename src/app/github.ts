@@ -6,6 +6,8 @@ type findBoundaryDateOutput = {
 	count: number;
 };
 
+const MAX_PER_PAGE = 100;
+
 export class GitHub {
 	private octokit: Octokit;
 
@@ -33,7 +35,7 @@ export class GitHub {
 			owner: username,
 			repo: repositoryName,
 			until: date.toISOString(),
-			per_page: 100,
+			per_page: MAX_PER_PAGE,
 		});
 
 		return response.data.length > 0;
@@ -44,16 +46,25 @@ export class GitHub {
 		repositoryName: string,
 		date: Date
 	): Promise<Endpoints["GET /repos/{owner}/{repo}/commits"]["response"]["data"]> {
-		// TODO: Handle cases where there are more than 100 commits per day
-		const response = await this.octokit.request("GET /repos/{owner}/{repo}/commits", {
-			owner: username,
-			repo: repositoryName,
-			until: date.toISOString(),
-			per_page: 100,
-		});
+		let targetDate = date.toISOString();
+		while (true) {
+			const response = await this.octokit.request("GET /repos/{owner}/{repo}/commits", {
+				owner: username,
+				repo: repositoryName,
+				until: targetDate,
+				per_page: MAX_PER_PAGE,
+			});
 
-		// Commits are returned in descending order, so reverse it
-		return response.data.reverse();
+			if (response.data.length < 100) {
+				// Commits are returned in descending order, so reverse it
+				return response.data.reverse();
+			}
+
+			targetDate = response.data[response.data.length - 1].commit.author?.date || "";
+			if (targetDate === "") {
+				return response.data.reverse();
+			}
+		}
 	}
 
 	public async getRepository(
