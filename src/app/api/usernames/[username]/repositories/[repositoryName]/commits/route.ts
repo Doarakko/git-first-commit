@@ -8,7 +8,7 @@ export const runtime = 'edge'
 // https://docs.github.com/ja/rest/commits/commits?apiVersion=2022-11-28#list-commits
 const startDate = new Date(Date.UTC(1970, 0, 1));
 
-const defaultCommitLimit = 3;
+const defaultCommitLimit = 1;
 
 export async function GET(
 	request: Request,
@@ -25,13 +25,15 @@ export async function GET(
 			);
 		}
 
-		const github = new GitHub(process.env.GITHUB_TOKEN || "");
 		const githubRepository = new GitHubRepository(getRequestContext().env.DB);
 		const response = await githubRepository.GetRepositoryWithCommits(username, repositoryName);
 		if (response) {
 			return NextResponse.json(response);
 		}
 
+		// TODO: Change error code when GitHub API rate limit is exceeded
+		// https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#exceeding-the-rate-limit
+		const github = new GitHub(process.env.GITHUB_TOKEN || "");
 		const repository = await github.getRepository(username, repositoryName);
 		if (!repository) {
 			return NextResponse.json(
