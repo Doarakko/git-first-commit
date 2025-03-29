@@ -1,13 +1,6 @@
 import { Octokit } from "@octokit/core";
 import type { Endpoints } from "@octokit/types";
 
-type findBoundaryDateOutput = {
-	boundaryDate: Date;
-	count: number;
-};
-
-const MAX_PER_PAGE = 100;
-
 export class GitHub {
 	private octokit: Octokit;
 
@@ -15,56 +8,55 @@ export class GitHub {
 		this.octokit = new Octokit({ auth: token });
 	}
 
-	private zeroFillDate(t: Date): Date {
-		return new Date(
-			Date.UTC(
-				t.getFullYear(),
-				t.getMonth(),
-				t.getDate(),
-				0, 0, 0, 0,
-			)
-		);
-	}
-
-	public async hasCommit(
-		username: string,
-		repositoryName: string,
-		date: Date
-	): Promise<boolean> {
-		const response = await this.octokit.request("GET /repos/{owner}/{repo}/commits", {
-			owner: username,
-			repo: repositoryName,
-			until: date.toISOString(),
-			per_page: MAX_PER_PAGE,
-		});
-
-		return response.data.length > 0;
-	}
-
+	// https://github.com/khalidbelk/FirstCommitter
 	public async getFirstCommits(
 		username: string,
 		repositoryName: string,
-		date: Date
+		defaultBranch: string,
 	): Promise<Endpoints["GET /repos/{owner}/{repo}/commits"]["response"]["data"]> {
-		let targetDate = date.toISOString();
-		while (true) {
-			const response = await this.octokit.request("GET /repos/{owner}/{repo}/commits", {
-				owner: username,
-				repo: repositoryName,
-				until: targetDate,
-				per_page: MAX_PER_PAGE,
-			});
+		const totalPage = await this.getTotalPage(username, repositoryName, defaultBranch);
+		const response = await this.octokit.request("GET /repos/{owner}/{repo}/commits", {
+			owner: username,
+			repo: repositoryName,
+			page: totalPage,
+			per_page: 1,
+		});
 
-			if (response.data.length < 100) {
-				// Commits are returned in descending order, so reverse it
-				return response.data.reverse();
-			}
+		return response.data;
+	}
 
-			targetDate = response.data[response.data.length - 1].commit.author?.date || "";
-			if (targetDate === "") {
-				return response.data.reverse();
+	private async getTotalPage(
+		username: string,
+		repositoryName: string,
+		branch: string,
+	): Promise<number> {
+		const response = await this.octokit.request("GET /repos/{owner}/{repo}/commits", {
+			owner: username,
+			repo: repositoryName,
+			sha: branch,
+			page: 1,
+			per_page: 1,
+		});
+
+		const linkHeader = response.headers.link;
+		if (linkHeader === undefined) {
+			return 1;
+		}
+
+		const links = linkHeader.split(", ");
+		for (const link of links) {
+			const [urlPart, relPart] = link.split("; ");
+
+			if (relPart?.includes('rel="last"')) {
+				const url = urlPart.replace(/<|>/g, "");
+				const urlParams = new URL(url).searchParams;
+				const page = urlParams.get("page");
+
+				return page ? Number.parseInt(page, 10) : 0;
 			}
 		}
+
+		return 1;
 	}
 
 	public async getRepository(
@@ -77,40 +69,5 @@ export class GitHub {
 		});
 
 		return response.data;
-	}
-
-	public async findBoundaryDate(
-		username: string,
-		repositoryName: string,
-		start: Date,
-		end: Date
-	): Promise<findBoundaryDateOutput> {
-		let count = 0;
-		let startDate = start;
-		let endDate = end;
-
-		while (startDate < endDate) {
-			// TODO: Set initial value to repository creation date
-			let mid = new Date(startDate.getTime() + (endDate.getTime() - startDate.getTime()) / 2);
-			mid = this.zeroFillDate(mid);
-
-			const hasCommitResult = await this.hasCommit(username, repositoryName, mid);
-			if (hasCommitResult) {
-				endDate = mid;
-			} else {
-				startDate = new Date(mid.getTime() + 24 * 60 * 60 * 1000);
-			}
-
-			startDate = this.zeroFillDate(startDate);
-			endDate = this.zeroFillDate(endDate);
-			count++;
-
-			console.log("count", count, startDate, endDate);
-		}
-
-		return {
-			boundaryDate: startDate,
-			count,
-		};
 	}
 }

@@ -40,25 +40,17 @@ export async function GET(
 			return NextResponse.json(response);
 		}
 
-		// TODO: Change error code when GitHub API rate limit is exceeded
-		// https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#exceeding-the-rate-limit
+
 		const github = new GitHub(process.env.GITHUB_TOKEN || "");
 		const repository = await github.getRepository(username, repositoryName);
-
-		const endDate = new Date();
-		const { boundaryDate } = await github.findBoundaryDate(
-			username,
-			repositoryName,
-			startDate,
-			endDate
-		);
 
 		const firstCommits = await github.getFirstCommits(
 			username,
 			repositoryName,
-			boundaryDate
+			repository.default_branch,
 		);
 
+		const commitAuthorDate = firstCommits[0].commit.author?.date;
 		await githubRepository.AddRepositoryWithCommits(
 			username,
 			repositoryName,
@@ -73,7 +65,7 @@ export async function GET(
 				authorName: commit.commit.author?.name || "",
 				authorUrl: commit.author?.html_url || "",
 				authorImageUrl: commit.author?.avatar_url || "",
-				commitDate: new Date(commit.commit.committer?.date || ""),
+				commitDate: new Date(commitAuthorDate || ""),
 				authorDate: new Date(commit.commit.author?.date || "")
 			}))
 		);
@@ -81,7 +73,7 @@ export async function GET(
 		return NextResponse.json({
 			username,
 			repositoryName,
-			firstCommitDate: boundaryDate,
+			firstCommitDate: commitAuthorDate,
 			commits: firstCommits.slice
 		});
 

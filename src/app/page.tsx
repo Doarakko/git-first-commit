@@ -48,7 +48,7 @@ export default function Home() {
 					const diff = Math.random() * 10;
 					return Math.min(oldProgress + diff, 100);
 				});
-			}, 300);
+			}, 100);
 			return () => {
 				clearInterval(interval);
 			};
