@@ -67,6 +67,7 @@ export async function GET(
 				url: commit.html_url,
 				message: commit.commit.message,
 				authorId: commit.author?.login?.toString() || "",
+				authorName: commit.commit.author?.name || "",
 				authorUrl: commit.author?.html_url || "",
 				authorImageUrl: commit.author?.avatar_url || "",
 				commitDate: new Date(commit.commit.committer?.date || ""),

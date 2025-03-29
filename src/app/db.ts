@@ -26,6 +26,7 @@ export class GitHubRepository {
 					c.url,
 					c.message,
 					c.author_id as authorId,
+					c.author_name as authorName,
 					c.author_url as authorUrl,
 					c.author_image_url as authorImageUrl,
 					c.commit_date as commitDate,
@@ -60,6 +61,7 @@ export class GitHubRepository {
 			url: string;
 			message: string;
 			authorId: string;
+			authorName: string;
 			authorUrl: string;
 			authorImageUrl: string;
 			commitDate: Date;
@@ -100,11 +102,12 @@ export class GitHubRepository {
 					url,
 					message,
 					author_id,
+					author_name,
 					author_url,
 					author_image_url,
 					commit_date,
 					author_date
-				) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+				) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
 			);
 
 			for (let i = 0; i < commits.length; i++) {
@@ -116,6 +119,7 @@ export class GitHubRepository {
 						commit.url,
 						commit.message,
 						commit.authorId,
+						commit.authorName,
 						commit.authorUrl,
 						commit.authorImageUrl,
 						commit.commitDate.toISOString(),

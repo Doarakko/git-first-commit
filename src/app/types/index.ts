@@ -15,6 +15,7 @@ export interface Commit {
     url: string;
     message: string;
     authorId: string;
+    authorName: string;
     authorUrl: string;
     authorImageUrl: string;
     commitDate: string;

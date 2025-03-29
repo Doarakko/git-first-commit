@@ -22,6 +22,7 @@ CREATE TABLE commits (
   url TEXT NOT NULL,
   message TEXT NOT NULL,
   author_id TEXT NOT NULL,
+  author_name TEXT NOT NULL,
   author_url TEXT NOT NULL,
   author_image_url TEXT NOT NULL,
   commit_date DATETIME NOT NULL,
