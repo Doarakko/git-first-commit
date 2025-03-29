@@ -62,6 +62,7 @@ export async function GET(
 			repository.owner.avatar_url,
 			repository.description || "",
 			repository.stargazers_count,
+			repository.created_at,
 			firstCommits.slice(0, defaultCommitLimit).map(commit => ({
 				url: commit.html_url,
 				message: commit.commit.message,

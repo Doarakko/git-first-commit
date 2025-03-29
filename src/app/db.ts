@@ -55,6 +55,7 @@ export class GitHubRepository {
 		ownerImageUrl: string,
 		repositoryDescription: string,
 		starCount: number,
+		platformCreatedDate: string,
 		commits: {
 			url: string;
 			message: string;
@@ -78,8 +79,9 @@ export class GitHubRepository {
 						name,
 						owner_image_url,
 						description,
-						star_count
-					) VALUES (?, ?, ?, ?, ?, ?, ?)`
+						star_count,
+						platform_created_at
+					) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
 				).bind(
 					repositoryId,
 					"github",
@@ -88,6 +90,7 @@ export class GitHubRepository {
 					ownerImageUrl,
 					repositoryDescription,
 					starCount,
+					platformCreatedDate,
 				)
 			);
 
