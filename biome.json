@@ -7,11 +7,15 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"ignore": []
+		"ignore": [
+			"node_modules/**",
+			".next/**",
+			".vercel/**"
+		]
 	},
 	"formatter": {
 		"enabled": true,
-		"indentStyle": "tab"
+		"indentStyle": "space"
 	},
 	"organizeImports": {
 		"enabled": true
