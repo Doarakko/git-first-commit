@@ -92,7 +92,7 @@ export default async function Page(props: {
 					{repository.username}/{repository.name}
 				</a>
 			</h1>
-			<p className="text-gray-500 mb-4">{repository.description}</p>
+			<p className="text-gray-500 pl-2 pb-2">{repository.description}</p>
 			<div className="space-y-4">
 				{commits.map((commit) => (
 					<CommitCard key={commit.url} commit={commit} />
@@ -111,8 +111,8 @@ export default async function Page(props: {
 				.
 			</p>
 			<div>
-				<h2 className="text-xl font-bold">Let's deepdive!</h2>
-				<div className=" bg-black text-white p-4 rounded-md shadow-md min-w-[300px] sm:min-w-[400px] md:min-w-[500px] lg:min-w-[600px]">
+				<h2 className="text-xl font-bold pb-2 pl-2">Deepdive</h2>
+				<div className="bg-black text-white p-4 rounded-md shadow-md min-w-[300px] sm:min-w-[400px] md:min-w-[500px] lg:min-w-[600px]">
 					<pre className="whitespace-pre-wrap">
 						<code>
 							git clone https://github.com/{repository.username}/
@@ -122,7 +122,7 @@ export default async function Page(props: {
 				</div>
 			</div>
 			<div>
-				<h2 className="text-lg font-semibold pt-4">Featured</h2>
+				<h2 className="text-xl font-bold pt-4 pb-2 pl-2">Featured</h2>
 				{repositories.length > 0 && (
 					<RepositoryCardList repositories={repositories} />
 				)}

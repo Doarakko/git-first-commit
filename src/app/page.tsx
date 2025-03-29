@@ -115,7 +115,7 @@ export default function Home() {
 	}
 
 	return (
-		<div className="min-h-screen bg-gray-100 flex flex-col items-center py-4 px-4 sm:px-6 lg:px-8">
+		<div className="min-h-screen bg-gray-100 flex flex-col items-center py-16 px-4 sm:px-6 lg:px-8">
 			<div className="max-w-md w-full text-left">
 				<div className="mt-8">
 					<p className="mt-2 text-base pb-2 pl-2 text-gray-700">
@@ -133,7 +133,9 @@ export default function Home() {
 			</div>
 
 			<div>
-				<h2 className="text-lg font-semibold pt-4 text-gray-700">Featured</h2>
+				<h2 className="text-xl font-bold pt-24 pb-2 pl-2 text-gray-700">
+					Featured
+				</h2>
 				{repositories.length > 0 && (
 					<RepositoryCardList repositories={repositories} />
 				)}
