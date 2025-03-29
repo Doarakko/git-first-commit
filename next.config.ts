@@ -1,4 +1,4 @@
-import { setupDevPlatform } from '@cloudflare/next-on-pages/next-dev';
+import { setupDevPlatform } from "@cloudflare/next-on-pages/next-dev";
 
 // Here we use the @cloudflare/next-on-pages next-dev module to allow us to
 // use bindings during local development (when running the application with
@@ -10,11 +10,11 @@ setupDevPlatform().catch(console.error);
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-	env: {
-		GITHUB_TOKEN: process.env.GITHUB_TOKEN,
-		PUBLIC_URL: process.env.PUBLIC_URL,
-		ENV: process.env.ENV,
-	},
+  env: {
+    GITHUB_TOKEN: process.env.GITHUB_TOKEN,
+    PUBLIC_URL: process.env.PUBLIC_URL,
+    ENV: process.env.ENV,
+  },
 };
 
 export default nextConfig;
