@@ -159,4 +159,28 @@ export class GitHubRepository {
 
 		return results.map(row => row as unknown as Repository);
 	}
+
+	public async SearchRepositories(query: string, limit = 3): Promise<Repository[]> {
+		const { results } = await this.db
+			.prepare(
+				`SELECT 
+					r.id,
+					r.platform_name as platformName,
+					r.username,
+					r.name as name,
+					r.owner_image_url as ownerImageUrl,
+					r.description,
+					r.created_at as createdAt,
+					r.updated_at as updatedAt
+				FROM repositories r
+				WHERE r.username LIKE ? OR r.name LIKE ?
+				LIMIT ?`
+			)
+			.bind(`%${query}%`, `%${query}%`, limit)
+			.all();
+
+		if (!results?.length) return [];
+
+		return results.map(row => row as unknown as Repository);
+	}
 }
