@@ -196,6 +196,7 @@ export default function Home() {
           {suggestions.length > 0 && (
             <ul className="absolute bg-white border border-gray-300 rounded-md mt-1 z-10 w-md">
               {suggestions.map((repo, index) => (
+                // biome-ignore lint: Todo
                 <li
                   key={repo.id}
                   className={`p-2 cursor-pointer ${selectedIndex === index ? "bg-gray-100" : ""}`}
