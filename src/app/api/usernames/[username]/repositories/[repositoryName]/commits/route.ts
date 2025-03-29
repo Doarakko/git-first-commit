@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { getRequestContext } from '@cloudflare/next-on-pages'
+import { RequestError } from "@octokit/request-error";
 import { GitHub } from "@/github";
 import { GitHubRepository } from "@/db";
+import { GITHUB_REPOSITORY_NAME_REGEX } from "@/constants";
 
 export const runtime = 'edge'
 
@@ -25,6 +27,13 @@ export async function GET(
 			);
 		}
 
+		if (!GITHUB_REPOSITORY_NAME_REGEX.test(repositoryName) || !GITHUB_REPOSITORY_NAME_REGEX.test(username)) {
+			return NextResponse.json(
+				{ error: "Invalid name" },
+				{ status: 400, }
+			);
+		}
+
 		const githubRepository = new GitHubRepository(getRequestContext().env.DB);
 		const response = await githubRepository.GetRepositoryWithCommits(username, repositoryName);
 		if (response) {
@@ -35,12 +44,6 @@ export async function GET(
 		// https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#exceeding-the-rate-limit
 		const github = new GitHub(process.env.GITHUB_TOKEN || "");
 		const repository = await github.getRepository(username, repositoryName);
-		if (!repository) {
-			return NextResponse.json(
-				{ error: "Repository not found" },
-				{ status: 404 }
-			);
-		}
 
 		const endDate = new Date();
 		const { boundaryDate } = await github.findBoundaryDate(
@@ -83,6 +86,23 @@ export async function GET(
 		});
 
 	} catch (error) {
+		if (error instanceof RequestError) {
+			if (error.status === 404) {
+				return NextResponse.json(
+					{ error: "Repository not found" },
+					{ status: 404 }
+				);
+			}
+
+			// https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#exceeding-the-rate-limit
+			if (error.status === 403 || error.status === 429) {
+				return NextResponse.json(
+					{ error: "GitHub API rate limit exceeded" },
+					{ status: 429 }
+				);
+			}
+		}
+
 		console.error(error);
 		return NextResponse.json(
 			{ error: "Failed to fetch repository data" },

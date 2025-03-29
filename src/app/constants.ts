@@ -27,3 +27,5 @@ export const DEFAULT_METADATA: Metadata = {
     },
     robots: "index, follow",
 };
+
+export const GITHUB_REPOSITORY_NAME_REGEX = /^(?!.*[.-]{2})(?!.*[.-]$)(?!.*[.-]{2})[a-zA-Z0-9._-]{1,100}$/;

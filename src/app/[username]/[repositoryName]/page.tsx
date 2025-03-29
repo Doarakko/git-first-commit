@@ -106,7 +106,7 @@ export default async function Page(props: {
 					rel="noopener noreferrer"
 					className="hover:text-gray-700"
 				>
-					GitHub issue
+					GitHub Issue
 				</a>
 				.
 			</p>

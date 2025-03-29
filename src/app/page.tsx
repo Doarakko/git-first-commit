@@ -4,8 +4,9 @@ import { useRouter } from "next/navigation";
 import "./globals.css";
 import RepositoryCardList from "@/components/RepositoryCardList";
 import type { Repository } from "@/types";
+import { GITHUB_REPOSITORY_NAME_REGEX } from "./constants";
 
-const githubRepositoryRegex =
+const githubRepositoryUrlRegex =
 	/^https?:\/\/(www\.)?github\.com\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9._-]+)(\/|\.git)?$/;
 
 export default function Home() {
@@ -75,7 +76,7 @@ export default function Home() {
 				handleSuggestionClick(suggestions[selectedIndex]);
 			} else {
 				const url = event.currentTarget.value;
-				const match = url.match(githubRepositoryRegex);
+				const match = url.match(githubRepositoryUrlRegex);
 				if (!match) {
 					setError(
 						"Invalid URL format. Please enter a valid GitHub repository URL.",
@@ -92,9 +93,7 @@ export default function Home() {
 					`/api/usernames/${username}/repositories/${repositoryName}/commits`,
 					{
 						method: "GET",
-						headers: {
-							"Content-Type": "application/json",
-						},
+						headers: { "Content-Type": "application/json" },
 					},
 				);
 				setLoading(false);
@@ -105,11 +104,22 @@ export default function Home() {
 					);
 					return;
 				}
-				if (!response.ok) {
+				if (response.status === 400) {
 					setError(
-						"Failed to search first commit due to exceeding the GitHub API rate limit. Please try again after about 30 minutes.",
+						"Invalid URL format. Please enter a valid GitHub repository URL.",
 					);
 					return;
+				}
+				if (response.status === 429) {
+					setError(
+						"Failed to find first commit due to exceeding the GitHub API rate limit. Please try again after about 30 minutes.",
+					);
+					return;
+				}
+				if (!response.ok) {
+					setError(
+						"Failed to find first commit due to unknown error. Please try again later or report vie GitHub Issue.",
+					);
 				}
 
 				setError(null);
@@ -128,16 +138,25 @@ export default function Home() {
 			return;
 		}
 
+		if (
+			!GITHUB_REPOSITORY_NAME_REGEX.test(query) ||
+			!GITHUB_REPOSITORY_NAME_REGEX.test(query)
+		) {
+			setSuggestions([]);
+			return;
+		}
+
 		const response = await fetch(`/api/repositories?q=${query}`);
 
 		const data: { repositories: Repository[] } = await response.json();
-		setSuggestions(data.repositories);
+		setSuggestions(data.repositories ? data.repositories : []);
 	};
 
 	const handleSuggestionClick = (repo: Repository) => {
 		if (!repo) {
 			return;
 		}
+
 		setInputValue(`https://github.com/${repo.username}/${repo.name}`);
 		setSuggestions([]);
 		setSelectedIndex(-1);
