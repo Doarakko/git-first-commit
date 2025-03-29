@@ -1,7 +1,7 @@
 name: Lint Check
 
 on:
-  pull_request:
+  push:
     branches-ignore:
       - main
 
