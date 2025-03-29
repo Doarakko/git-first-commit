@@ -16,7 +16,7 @@ const CommitCard: React.FC<CommitCardProps> = ({ commit }) => {
 							alt={commit.authorId}
 							className="w-10 h-10 rounded-full"
 						/>
-						<div>
+						<div className="font-semibold">
 							<a
 								href={commit.authorUrl}
 								target="_blank"
@@ -30,19 +30,19 @@ const CommitCard: React.FC<CommitCardProps> = ({ commit }) => {
 				) : (
 					<>
 						<div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center" />
-						<div>{commit.authorName}</div>
+						<div className="font-semibold">{commit.authorName}</div>
 					</>
 				)}
 			</div>
 			<a
 				href={commit.url}
-				className="hover:text-gray-900"
+				className="hover:text-gray-900 text-lg"
 				target="_blank"
 				rel="noopener noreferrer"
 			>
 				{commit.message}
 			</a>
-			<div className="text-sm text-gray-500">
+			<div className="text-base text-gray-500 pt-2">
 				{new Date(commit.commitDate).toDateString()}
 			</div>
 		</div>
