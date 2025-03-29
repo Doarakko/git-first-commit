@@ -6,7 +6,7 @@ export const DEFAULT_METADATA: Metadata = {
   description: "Find the first commit of any GitHub repository",
   authors: {
     name: "Doarakko",
-    url: "https://x.com/dodododoarakko",
+    url: "https://github.com/Doarakko",
   },
   openGraph: {
     title: "Git First Commit",

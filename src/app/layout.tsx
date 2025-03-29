@@ -78,7 +78,7 @@ export default function RootLayout({
                 </a>
               </div>
               <a
-                href="https://x.com/dodododoarakko"
+                href="https://github.com/Doarakko"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-2"
