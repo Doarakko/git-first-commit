@@ -13,7 +13,6 @@ export default function Home() {
   const router = useRouter();
   const [repositories, setRepositories] = useState<Repository[]>([]);
   const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [suggestions, setSuggestions] = useState<Repository[]>([]);
   const [inputValue, setInputValue] = useState("");
@@ -37,24 +36,6 @@ export default function Home() {
     fetchRepositories();
   }, []);
 
-  useEffect(() => {
-    if (loading) {
-      const interval = setInterval(() => {
-        setProgress((oldProgress) => {
-          if (oldProgress === 100) {
-            clearInterval(interval);
-            return 100;
-          }
-          const diff = Math.random() * 10;
-          return Math.min(oldProgress + diff, 100);
-        });
-      }, 100);
-      return () => {
-        clearInterval(interval);
-      };
-    }
-  }, [loading]);
-
   const handleKeyDown = async (
     event: React.KeyboardEvent<HTMLInputElement>,
   ) => {
@@ -76,57 +57,60 @@ export default function Home() {
         handleSuggestionClick(suggestions[selectedIndex]);
       } else {
         const url = event.currentTarget.value;
-        const match = url.match(githubRepositoryUrlRegex);
-        if (!match) {
-          setError(
-            "Invalid URL format. Please enter a valid GitHub repository URL.",
-          );
-          return;
-        }
-
-        setError(null);
-        const username = match[2];
-        const repositoryName = match[3];
-
-        setLoading(true);
-        const response = await fetch(
-          `/api/usernames/${username}/repositories/${repositoryName}/commits`,
-          {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-          },
-        );
-        setLoading(false);
-
-        if (response.status === 404) {
-          setError(
-            "Repository not found. Please enter a valid GitHub repository URL.",
-          );
-          return;
-        }
-        if (response.status === 400) {
-          setError(
-            "Invalid URL format. Please enter a valid GitHub repository URL.",
-          );
-          return;
-        }
-        if (response.status === 429) {
-          setError(
-            "Failed to find first commit due to exceeding the GitHub API rate limit. Please try again after about 30 minutes.",
-          );
-          return;
-        }
-        if (!response.ok) {
-          setError(
-            "Failed to find first commit due to unknown error. Please try again later or report vie GitHub Issue.",
-          );
-        }
-
-        setError(null);
-        router.replace(`${username}/${repositoryName}`);
+        await find(url);
       }
     }
   };
+
+  async function find(url: string) {
+    setLoading(true);
+    const match = url.match(githubRepositoryUrlRegex);
+    if (!match) {
+      setError(
+        "Invalid URL format. Please enter a valid GitHub repository URL.",
+      );
+      return;
+    }
+
+    const username = match[2];
+    const repositoryName = match[3];
+    const response = await fetch(
+      `/api/usernames/${username}/repositories/${repositoryName}/commits`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      },
+    );
+    setLoading(false);
+
+    if (response.status === 404) {
+      setError(
+        "Repository not found. Please enter a valid GitHub repository URL.",
+      );
+      return;
+    }
+    if (response.status === 400) {
+      setError(
+        "Invalid URL format. Please enter a valid GitHub repository URL.",
+      );
+      return;
+    }
+    if (response.status === 429) {
+      setError(
+        "Failed to find first commit due to exceeding the GitHub API rate limit. Please try again after about 30 minutes.",
+      );
+      return;
+    }
+    if (!response.ok) {
+      setError(
+        "Failed to find first commit due to unknown error. Please try again later or report vie GitHub Issue.",
+      );
+      return;
+    }
+
+    setError(null);
+    router.replace(`${username}/${repositoryName}`);
+  }
 
   const handleInputChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -156,22 +140,18 @@ export default function Home() {
     if (!repo) {
       return;
     }
-
-    setInputValue(`https://github.com/${repo.username}/${repo.name}`);
+    const url = `https://github.com/${repo.username}/${repo.name}`;
+    setInputValue(url);
     setSuggestions([]);
     setSelectedIndex(-1);
+
+    find(url);
   };
 
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 text-gray-700">
-        <h1 className="text-2xl mb-4">Searching...</h1>
-        <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-200">
-          <div
-            className="bg-blue-400 h-2.5 rounded-full"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
+        <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32 mb-4" />
       </div>
     );
   }
