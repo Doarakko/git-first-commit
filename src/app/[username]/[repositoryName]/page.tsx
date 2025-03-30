@@ -65,7 +65,7 @@ export default async function Page(props: {
 
   if (!response.ok) {
     return (
-      <div className="p-4">
+      <div className="min-h-screen bg-gray-100 flex flex-col py-12 px-4 sm:px-6 md:px-8 lg:px-10 text-gray-700">
         <h1 className="text-2xl font-bold mb-4">Repository not found</h1>
       </div>
     );
@@ -74,46 +74,57 @@ export default async function Page(props: {
   const json: { repository: Repository; commits: Commit[] } =
     await response.json();
   const { repository, commits } = json;
+  const commit = commits[0];
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col py-12 px-12 sm:8 lg:px-40 text-gray-700">
-      <h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
-        <img
-          src={repository.ownerImageUrl}
-          alt={`${repository.username}'s avatar`}
-          className="w-8 h-8 rounded-full"
-        />
-        <a
-          href={`https://${repository.platformName}.com/${repository.username}/${repository.name}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:text-gray-900"
-        >
-          {repository.username}/{repository.name}
-        </a>
-      </h1>
-      <p className="text-gray-500 pl-2 pb-2">{repository.description}</p>
-      <div className="space-y-4">
-        {commits.map((commit) => (
-          <CommitCard key={commit.url} commit={commit} />
-        ))}
+    <div className="min-h-screen bg-gray-100 flex flex-col py-12 px-4 sm:px-6 md:px-8 lg:px-10 text-gray-700">
+      <div className="w-full max-w-4xl mx-auto">
+        <h1 className="text-2xl font-bold flex items-center gap-2 pb-2">
+          <img
+            src={repository.ownerImageUrl}
+            alt={`${repository.username}'s avatar`}
+            className="w-8 h-8 rounded-full"
+          />
+          <a
+            href={`https://${repository.platformName}.com/${repository.username}/${repository.name}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-gray-900"
+          >
+            {repository.username}/{repository.name}
+          </a>
+        </h1>
       </div>
-      <p className="text-gray-500 pt-4 pl-2">
-        If you find any errors in your search results, please report them via{" "}
-        <a
-          href="https://github.com/Doarakko/git-first-commit/issues/10"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:text-gray-700"
-        >
-          GitHub Issue
-        </a>
-        .
-      </p>
+      <div className="w-full max-w-4xl mx-auto pl-4">
+        <p className="text-gray-500 pb-2">{repository.description}</p>
+      </div>
+      <div className="w-full max-w-4xl mx-auto">
+        {commit ? (
+          <CommitCard key={commit.url} commit={commit} />
+        ) : (
+          <p className="text-gray-700">This repository has no commits.</p>
+        )}
+      </div>
+      <div className="w-full max-w-4xl mx-auto pl-4">
+        <p className="text-gray-500 pt-4">
+          If you find any errors in your search results, please report them via{" "}
+          <a
+            href="https://github.com/Doarakko/git-first-commit/issues/10"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-gray-700"
+          >
+            GitHub Issue
+          </a>
+          .
+        </p>
+      </div>
       <div>
-        <h2 className="text-xl font-bold pb-2 pl-2 pt-12">Deepdive</h2>
-        <div className="bg-black text-white p-4 rounded-md shadow-md min-w-[300px] sm:min-w-[400px] md:min-w-[500px] lg:min-w-[600px]">
-          <pre className="whitespace-pre-wrap">
+        <div className=" max-w-4xl mx-auto">
+          <h2 className="text-xl font-bold pb-2 pt-12 text-left">Deepdive</h2>
+        </div>
+        <div className="bg-black text-white p-4 rounded-md shadow-md w-full max-w-4xl mx-auto">
+          <pre className="whitespace-pre-wrap break-words">
             <code>
               git clone https://github.com/{repository.username}/
               {repository.name} && cd {repository.name} && git log --reverse
@@ -122,10 +133,14 @@ export default async function Page(props: {
         </div>
       </div>
       <div>
-        <h2 className="text-xl font-bold pt-12 pb-2 pl-2">Featured</h2>
-        {repositories.length > 0 && (
-          <RepositoryCardList repositories={repositories} />
-        )}
+        <div className=" max-w-4xl mx-auto">
+          <h2 className="text-xl font-bold pt-12 pb-2 text-left">Featured</h2>
+        </div>
+        <div className="flex justify-center w-full max-w-4xl mx-auto">
+          {repositories.length > 0 && (
+            <RepositoryCardList repositories={repositories} />
+          )}
+        </div>
       </div>
     </div>
   );
