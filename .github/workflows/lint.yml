@@ -1,4 +1,4 @@
-name: Build
+name: Lint Check
 
 on:
   push:
@@ -6,17 +6,15 @@ on:
       - main
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Install dependencies
-        run: |
-          npm install
+        run: npm install
 
-      - name: Build
-        run: |
-          npm run build
+      - name: Run Lint
+        run: npm run lint
