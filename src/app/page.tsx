@@ -103,7 +103,7 @@ export default function Home() {
     }
     if (!response.ok) {
       setError(
-        "Failed to find first commit due to unknown error. Please try again later or report vie GitHub Issue.",
+        "Failed to find first commit due to unknown error. Please try again later or report via GitHub Issue.",
       );
       return;
     }
