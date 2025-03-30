@@ -63,7 +63,6 @@ export default function Home() {
   };
 
   async function find(url: string) {
-    setLoading(true);
     const match = url.match(githubRepositoryUrlRegex);
     if (!match) {
       setError(
@@ -74,6 +73,7 @@ export default function Home() {
 
     const username = match[2];
     const repositoryName = match[3];
+    setLoading(true);
     const response = await fetch(
       `/api/usernames/${username}/repositories/${repositoryName}/commits`,
       {
@@ -82,6 +82,12 @@ export default function Home() {
       },
     );
     setLoading(false);
+
+    if (response.ok) {
+      setError(null);
+      router.replace(`${username}/${repositoryName}`);
+      return;
+    }
 
     if (response.status === 404) {
       setError(
@@ -101,15 +107,10 @@ export default function Home() {
       );
       return;
     }
-    if (!response.ok) {
-      setError(
-        "Failed to find first commit due to unknown error. Please try again later or report via GitHub Issue.",
-      );
-      return;
-    }
 
-    setError(null);
-    router.replace(`${username}/${repositoryName}`);
+    setError(
+      "Failed to find first commit due to unknown error. Please try again later or report via GitHub Issue.",
+    );
   }
 
   const handleInputChange = async (
@@ -170,16 +171,16 @@ export default function Home() {
             onKeyDown={handleKeyDown}
             onChange={handleInputChange}
             onFocus={() => setError(null)}
-            className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-700 rounded-md focus:outline-hidden focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm bg-white"
+            className="appearance-none relative block w-full px-4 py-2 border border-gray-300 placeholder-gray-500 text-gray-700 rounded-md focus:outline-hidden focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm bg-white"
           />
 
           {suggestions.length > 0 && (
-            <ul className="absolute bg-white border border-gray-300 rounded-md mt-1 z-10 w-md">
+            <ul className="relative bg-white border border-gray-300 rounded-md mt-1 z-10 w-full">
               {suggestions.map((repo, index) => (
                 // biome-ignore lint: Todo
                 <li
                   key={repo.id}
-                  className={`p-2 cursor-pointer ${selectedIndex === index ? "bg-gray-100" : ""}`}
+                  className={`text-gray-700 p-2 cursor-pointer px-4 ${selectedIndex === index ? "bg-gray-100" : ""}`}
                   onClick={() => handleSuggestionClick(repo)}
                   onMouseEnter={() => setSelectedIndex(index)}
                 >
