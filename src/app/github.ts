@@ -1,105 +1,85 @@
 import { Octokit } from "@octokit/core";
 import type { Endpoints } from "@octokit/types";
 
-type findBoundaryDateOutput = {
-	boundaryDate: Date;
-	count: number;
-};
-
 export class GitHub {
-	private octokit: Octokit;
+  private octokit: Octokit;
 
-	constructor(token: string) {
-		this.octokit = new Octokit({ auth: token });
-	}
+  constructor(token: string) {
+    this.octokit = new Octokit({ auth: token });
+  }
 
-	private zeroFillDate(t: Date): Date {
-		return new Date(
-			Date.UTC(
-				t.getFullYear(),
-				t.getMonth(),
-				t.getDate(),
-				0, 0, 0, 0,
-			)
-		);
-	}
+  // https://github.com/khalidbelk/FirstCommitter
+  public async getFirstCommits(
+    username: string,
+    repositoryName: string,
+    defaultBranch: string,
+  ): Promise<
+    Endpoints["GET /repos/{owner}/{repo}/commits"]["response"]["data"]
+  > {
+    const totalPage = await this.getTotalPage(
+      username,
+      repositoryName,
+      defaultBranch,
+    );
+    const response = await this.octokit.request(
+      "GET /repos/{owner}/{repo}/commits",
+      {
+        owner: username,
+        repo: repositoryName,
+        page: totalPage,
+        per_page: 1,
+      },
+    );
 
-	public async hasCommit(
-		username: string,
-		repositoryName: string,
-		date: Date
-	): Promise<boolean> {
-		const response = await this.octokit.request("GET /repos/{owner}/{repo}/commits", {
-			owner: username,
-			repo: repositoryName,
-			until: date.toISOString(),
-			per_page: 100,
-		});
+    return response.data;
+  }
 
-		return response.data.length > 0;
-	}
+  private async getTotalPage(
+    username: string,
+    repositoryName: string,
+    branch: string,
+  ): Promise<number> {
+    const response = await this.octokit.request(
+      "GET /repos/{owner}/{repo}/commits",
+      {
+        owner: username,
+        repo: repositoryName,
+        sha: branch,
+        page: 1,
+        per_page: 1,
+      },
+    );
 
-	public async getFirstCommits(
-		username: string,
-		repositoryName: string,
-		date: Date
-	): Promise<Endpoints["GET /repos/{owner}/{repo}/commits"]["response"]["data"]> {
-		// TODO: Handle cases where there are more than 100 commits per day
-		const response = await this.octokit.request("GET /repos/{owner}/{repo}/commits", {
-			owner: username,
-			repo: repositoryName,
-			until: date.toISOString(),
-			per_page: 100,
-		});
+    const linkHeader = response.headers.link;
+    if (linkHeader === undefined) {
+      return 1;
+    }
 
-		// Commits are returned in descending order, so reverse it
-		return response.data.reverse();
-	}
+    const links = linkHeader.split(", ");
+    for (const link of links) {
+      const [urlPart, relPart] = link.split("; ");
 
-	public async getRepository(
-		username: string,
-		repositoryName: string,
-	): Promise<Endpoints["GET /repos/{owner}/{repo}"]["response"]["data"]> {
-		const response = await this.octokit.request("GET /repos/{owner}/{repo}", {
-			owner: username,
-			repo: repositoryName,
-		});
+      if (relPart?.includes('rel="last"')) {
+        const url = urlPart.replace(/<|>/g, "");
+        const urlParams = new URL(url).searchParams;
+        const page = urlParams.get("page");
 
-		return response.data;
-	}
+        return page ? Number.parseInt(page, 10) : 0;
+      }
+    }
 
-	public async findBoundaryDate(
-		username: string,
-		repositoryName: string,
-		start: Date,
-		end: Date
-	): Promise<findBoundaryDateOutput> {
-		let count = 0;
-		let startDate = start;
-		let endDate = end;
+    return 1;
+  }
 
-		while (startDate < endDate) {
-			// TODO: Set initial value to repository creation date
-			let mid = new Date(startDate.getTime() + (endDate.getTime() - startDate.getTime()) / 2);
-			mid = this.zeroFillDate(mid);
+  public async getRepository(
+    username: string,
+    repositoryName: string,
+  ): Promise<Endpoints["GET /repos/{owner}/{repo}"]["response"]["data"]> {
+    const response = await this.octokit.request("GET /repos/{owner}/{repo}", {
+      owner: username,
+      repo: repositoryName,
+    });
 
-			const hasCommitResult = await this.hasCommit(username, repositoryName, mid);
-			if (hasCommitResult) {
-				endDate = mid;
-			} else {
-				startDate = new Date(mid.getTime() + 24 * 60 * 60 * 1000);
-			}
-
-			startDate = this.zeroFillDate(startDate);
-			endDate = this.zeroFillDate(endDate);
-			count++;
-
-			console.log("count", count, startDate, endDate);
-		}
-
-		return {
-			boundaryDate: startDate,
-			count,
-		};
-	}
+    return response.data;
+  }
 }
