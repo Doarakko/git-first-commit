@@ -30,3 +30,5 @@ export const DEFAULT_METADATA: Metadata = {
 
 export const GITHUB_REPOSITORY_NAME_REGEX =
   /^(?!.*[.-]{2})(?!.*[.-]$)(?!.*[.-]{2})[a-zA-Z0-9._-]{1,100}$/;
+
+export const GITHUB_REPOSITORY_PATH_REGEX = /^([a-zA-Z0-9_-]+)\/([a-zA-Z0-9._-]+)$/;

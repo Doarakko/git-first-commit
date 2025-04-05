@@ -1,4 +1,5 @@
-import type { Repository, Commit } from "@/types";
+import type { Repository } from "@/types";
+import type { Commit } from "@/types";
 
 export class GitHubRepository {
   private db: D1Database;
@@ -181,10 +182,10 @@ export class GitHubRepository {
 					r.created_at as createdAt,
 					r.updated_at as updatedAt
 				FROM repositories r
-				WHERE r.username LIKE ? OR r.name LIKE ?
+				WHERE r.username LIKE ? OR r.name LIKE ? OR CONCAT(r.username, '/', r.name) LIKE ?
 				LIMIT ?`,
       )
-      .bind(`%${query}%`, `%${query}%`, limit)
+      .bind(`%${query}%`, `%${query}%`, `%${query}%`, limit)
       .all();
 
     if (!results?.length) return [];
