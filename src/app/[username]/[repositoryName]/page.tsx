@@ -41,15 +41,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page(props: {
   params: Promise<{ username: string; repositoryName: string }>;
 }) {
-  const repositortResponse = await fetch(
+  const repositoryResponse = await fetch(
     `${process.env.PUBLIC_URL}/api/repositories?limit=12`,
   );
-  if (!repositortResponse.ok) {
+  if (!repositoryResponse.ok) {
     console.error("Failed to fetch repositories");
     return;
   }
   const repositoryJson: { repositories: Repository[] } =
-    await repositortResponse.json();
+    await repositoryResponse.json();
   const repositories = repositoryJson.repositories ?? [];
 
   const params = await props.params;
