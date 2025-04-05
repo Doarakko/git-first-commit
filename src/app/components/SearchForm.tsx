@@ -48,7 +48,6 @@ const SearchForm: React.FC<SearchFormProps> = ({ setLoading }) => {
 
   async function find(s: string) {
     const match = s.match(GITHUB_REPOSITORY_PATH_REGEX);
-    console.log(match);
     if (!match) {
       setError("Invalid format.");
       return;
