@@ -34,7 +34,6 @@
     "postcss": "^8",
     "tailwindcss": "^4.0.17",
     "typescript": "^5",
-    "vercel": "^37.4.2",
     "wrangler": "^4.6.0"
   },
   "overrides": {
