@@ -104,10 +104,7 @@ const Header: React.FC = () => {
       return;
     }
 
-    if (
-      !GITHUB_REPOSITORY_NAME_REGEX.test(query) ||
-      !GITHUB_REPOSITORY_NAME_REGEX.test(query)
-    ) {
+    if (!GITHUB_REPOSITORY_NAME_REGEX.test(query)) {
       setSuggestions([]);
       return;
     }
