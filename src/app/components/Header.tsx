@@ -143,37 +143,35 @@ const Header: React.FC = () => {
             Git First Commit
           </a>
         </h1>
-        <div className="max-w-md w-full flex items-center">
-          <div className="relative w-full sm:w-sm md:w-sm">
-            <input
-              type="url"
-              placeholder="https://github.com/Doarakko/git-first-commit"
-              value={inputValue}
-              onKeyDown={handleKeyDown}
-              onChange={handleInputChange}
-              onFocus={() => setError(null)}
-              className="appearance-none relative block w-full px-4 py-2 border border-gray-300 placeholder-gray-500 text-gray-700 rounded-md focus:outline-hidden focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm bg-white"
-            />
+        <div className="max-w-md w-full sm:w-xs md:w-sm lg:w-lg px-4">
+          <input
+            type="url"
+            placeholder="https://github.com/Doarakko/git-first-commit"
+            value={inputValue}
+            onKeyDown={handleKeyDown}
+            onChange={handleInputChange}
+            onFocus={() => setError(null)}
+            className="appearance-none relative block w-full px-4 py-2 border border-gray-300 placeholder-gray-500 text-gray-700 rounded-md focus:outline-hidden focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm bg-white"
+          />
 
-            {suggestions.length > 0 && (
-              <ul className="absolute bg-white border border-gray-300 rounded-md mt-1 z-10">
-                {suggestions.map((repo, index) => (
-                  // biome-ignore lint: Todo
-                  <li
-                    key={repo.id}
-                    className={`text-gray-700 p-2 cursor-pointer px-4 ${selectedIndex === index ? "bg-gray-100" : ""}`}
-                    onClick={() => handleSuggestionClick(repo)}
-                    onMouseEnter={() => setSelectedIndex(index)}
-                  >
-                    {repo.username}/{repo.name}
-                  </li>
-                ))}
-              </ul>
-            )}
-            {error && (
-              <div className="text-red-500 text-sm pt-6 absolute">{error}</div>
-            )}
-          </div>
+          {suggestions.length > 0 && (
+            <ul className="absolute bg-white border border-gray-300 rounded-md mt-1 z-10">
+              {suggestions.map((repo, index) => (
+                // biome-ignore lint: Todo
+                <li
+                  key={repo.id}
+                  className={`text-gray-700 p-2 cursor-pointer px-4 ${selectedIndex === index ? "bg-gray-100" : ""}`}
+                  onClick={() => handleSuggestionClick(repo)}
+                  onMouseEnter={() => setSelectedIndex(index)}
+                >
+                  {repo.username}/{repo.name}
+                </li>
+              ))}
+            </ul>
+          )}
+          {error && (
+            <div className="text-red-500 text-sm pt-6 absolute">{error}</div>
+          )}
         </div>
 
         <div className="flex gap-4">
