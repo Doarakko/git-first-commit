@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
-import type { Commit, Repository } from "@/types";
-import RepositoryCardList from "@/components/RepositoryCardList";
 import CommitCard from "@/components/CommitCard";
+import RepositoryCardList from "@/components/RepositoryCardList";
 import { DEFAULT_METADATA } from "@/constants";
+import type { Commit, Repository } from "@/types";
+import type { Metadata } from "next";
 
 export const runtime = "edge";
 
@@ -42,7 +42,7 @@ export default async function Page(props: {
   params: Promise<{ username: string; repositoryName: string }>;
 }) {
   const repositortResponse = await fetch(
-    `${process.env.PUBLIC_URL}/api/repositories`,
+    `${process.env.PUBLIC_URL}/api/repositories?limit=12`,
   );
   if (!repositortResponse.ok) {
     console.error("Failed to fetch repositories");
@@ -136,7 +136,7 @@ export default async function Page(props: {
         <div className=" max-w-4xl mx-auto">
           <h2 className="text-xl font-bold pt-12 pb-2 text-left">Featured</h2>
         </div>
-        <div className="flex justify-center w-full max-w-4xl mx-auto">
+        <div className="flex justify-center w-full max-w-4xl mx-auto pb-12">
           {repositories.length > 0 && (
             <RepositoryCardList repositories={repositories} />
           )}

@@ -10,7 +10,7 @@ export default function Home() {
   useEffect(() => {
     const fetchRepositories = async () => {
       try {
-        const response = await fetch("/api/repositories?limit=21");
+        const response = await fetch("/api/repositories?limit=18");
         if (!response.ok) {
           console.error("Failed to fetch repositories");
           return;
@@ -27,7 +27,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center px-4 sm:px-6 lg:px-8">
-      <div>
+      <div className="pb-24">
         <h2 className="text-xl font-bold pt-4 pb-2 pl-2 text-gray-700">
           Featured
         </h2>
