@@ -1,27 +1,16 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import "./globals.css";
 import RepositoryCardList from "@/components/RepositoryCardList";
 import type { Repository } from "@/types";
-import { GITHUB_REPOSITORY_NAME_REGEX } from "./constants";
-
-const githubRepositoryUrlRegex =
-  /^https?:\/\/(www\.)?github\.com\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9._-]+)(\/|\.git)?$/;
 
 export default function Home() {
-  const router = useRouter();
   const [repositories, setRepositories] = useState<Repository[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [suggestions, setSuggestions] = useState<Repository[]>([]);
-  const [inputValue, setInputValue] = useState("");
-  const [selectedIndex, setSelectedIndex] = useState(-1);
 
   useEffect(() => {
     const fetchRepositories = async () => {
       try {
-        const response = await fetch("/api/repositories");
+        const response = await fetch("/api/repositories?limit=18");
         if (!response.ok) {
           console.error("Failed to fetch repositories");
           return;
@@ -36,165 +25,10 @@ export default function Home() {
     fetchRepositories();
   }, []);
 
-  const handleKeyDown = async (
-    event: React.KeyboardEvent<HTMLInputElement>,
-  ) => {
-    setError(null);
-    if (event.key === "ArrowDown") {
-      setSelectedIndex((prevIndex) =>
-        Math.min(prevIndex + 1, suggestions.length - 1),
-      );
-      event.preventDefault();
-      return;
-    }
-    if (event.key === "ArrowUp") {
-      setSelectedIndex((prevIndex) => Math.max(prevIndex - 1, 0));
-      event.preventDefault();
-      return;
-    }
-    if (event.key === "Enter") {
-      if (selectedIndex >= 0) {
-        handleSuggestionClick(suggestions[selectedIndex]);
-      } else {
-        const url = event.currentTarget.value;
-        await find(url);
-      }
-    }
-  };
-
-  async function find(url: string) {
-    const match = url.match(githubRepositoryUrlRegex);
-    if (!match) {
-      setError(
-        "Invalid URL format. Please enter a valid GitHub repository URL.",
-      );
-      return;
-    }
-
-    const username = match[2];
-    const repositoryName = match[3];
-    setLoading(true);
-    const response = await fetch(
-      `/api/usernames/${username}/repositories/${repositoryName}/commits`,
-      {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      },
-    );
-    setLoading(false);
-
-    if (response.ok) {
-      setError(null);
-      router.replace(`${username}/${repositoryName}`);
-      return;
-    }
-
-    if (response.status === 404) {
-      setError(
-        "Repository not found. Please enter a valid GitHub repository URL.",
-      );
-      return;
-    }
-    if (response.status === 400) {
-      setError(
-        "Invalid URL format. Please enter a valid GitHub repository URL.",
-      );
-      return;
-    }
-    if (response.status === 429) {
-      setError(
-        "Failed to find first commit due to exceeding the GitHub API rate limit. Please try again after about 30 minutes.",
-      );
-      return;
-    }
-
-    setError(
-      "Failed to find first commit due to unknown error. Please try again later or report via GitHub Issue.",
-    );
-  }
-
-  const handleInputChange = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const query = event.target.value;
-    setInputValue(query);
-    if (query.length < 3) {
-      setSuggestions([]);
-      return;
-    }
-
-    if (
-      !GITHUB_REPOSITORY_NAME_REGEX.test(query) ||
-      !GITHUB_REPOSITORY_NAME_REGEX.test(query)
-    ) {
-      setSuggestions([]);
-      return;
-    }
-
-    const response = await fetch(`/api/repositories?q=${query}`);
-
-    const data: { repositories: Repository[] } = await response.json();
-    setSuggestions(data.repositories ? data.repositories : []);
-  };
-
-  const handleSuggestionClick = (repo: Repository) => {
-    if (!repo) {
-      return;
-    }
-    const url = `https://github.com/${repo.username}/${repo.name}`;
-    setInputValue(url);
-    setSuggestions([]);
-    setSelectedIndex(-1);
-
-    find(url);
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 text-gray-700">
-        <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32 mb-4" />
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full text-left">
-        <div className="mt-8">
-          <p className="mt-2 text-base pb-2 pl-2 text-gray-700">
-            Find the first commit of any GitHub repository
-          </p>
-          <input
-            type="url"
-            placeholder="https://github.com/Doarakko/git-first-commit"
-            value={inputValue}
-            onKeyDown={handleKeyDown}
-            onChange={handleInputChange}
-            onFocus={() => setError(null)}
-            className="appearance-none relative block w-full px-4 py-2 border border-gray-300 placeholder-gray-500 text-gray-700 rounded-md focus:outline-hidden focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm bg-white"
-          />
-
-          {suggestions.length > 0 && (
-            <ul className="relative bg-white border border-gray-300 rounded-md mt-1 z-10 w-full">
-              {suggestions.map((repo, index) => (
-                // biome-ignore lint: Todo
-                <li
-                  key={repo.id}
-                  className={`text-gray-700 p-2 cursor-pointer px-4 ${selectedIndex === index ? "bg-gray-100" : ""}`}
-                  onClick={() => handleSuggestionClick(repo)}
-                  onMouseEnter={() => setSelectedIndex(index)}
-                >
-                  {repo.username}/{repo.name}
-                </li>
-              ))}
-            </ul>
-          )}
-          {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
-        </div>
-      </div>
-
-      <div>
-        <h2 className="text-xl font-bold pt-36 pb-2 pl-2 text-gray-700">
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center px-4 sm:px-6 lg:px-8">
+      <div className="pb-24">
+        <h2 className="text-xl font-bold pt-4 pb-2 pl-2 text-gray-700">
           Featured
         </h2>
         {repositories.length > 0 && (
