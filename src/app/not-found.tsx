@@ -1,4 +1,16 @@
+import { DEFAULT_METADATA } from "@/constants";
+import type { Metadata } from "next";
+
 export const runtime = "edge";
+
+export const metadata: Metadata = {
+  ...DEFAULT_METADATA,
+  title: "404",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default function NotFound() {
   return (
