@@ -66,7 +66,23 @@ export default async function Page(props: {
   if (!response.ok) {
     return (
       <div className="min-h-screen bg-gray-100 flex flex-col py-12 px-4 sm:px-6 md:px-8 lg:px-10 text-gray-700">
-        <h1 className="text-2xl font-bold mb-4">Repository not found</h1>
+        <div className="w-full max-w-4xl mx-auto text-center">
+          <h1 className="text-2xl font-bold mb-4">
+            {params.username}/{params.repositoryName} is not found.
+          </h1>
+          <div>
+            <div className=" max-w-4xl mx-auto">
+              <h2 className="text-xl font-bold pt-12 pb-2 text-left">
+                Featured
+              </h2>
+            </div>
+            <div className="flex justify-center w-full max-w-4xl mx-auto pb-12">
+              {repositories.length > 0 && (
+                <RepositoryCardList repositories={repositories} />
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

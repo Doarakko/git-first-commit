@@ -25,8 +25,13 @@ export const DEFAULT_METADATA: Metadata = {
   twitter: {
     card: "summary_large_image",
   },
-  robots: "index, follow",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export const GITHUB_REPOSITORY_NAME_REGEX =
   /^(?!.*[.-]{2})(?!.*[.-]$)(?!.*[.-]{2})[a-zA-Z0-9._-]{1,100}$/;
+
+export const GITHUB_REPOSITORY_PATH_REGEX = /^([a-zA-Z0-9_-]+)\/([a-zA-Z0-9._-]+)$/;
