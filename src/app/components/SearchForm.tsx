@@ -65,16 +65,12 @@ const SearchForm: React.FC<SearchFormProps> = ({ setLoading }) => {
     );
     setLoading(false);
 
-    if (response.ok) {
+    if (response.ok || response.status === 404) {
       setError(null);
       router.push(`/${username}/${repositoryName}`);
       return;
     }
 
-    if (response.status === 404) {
-      setError("Repository not found.");
-      return;
-    }
     if (response.status === 400) {
       setError("Invalid format.");
       return;
