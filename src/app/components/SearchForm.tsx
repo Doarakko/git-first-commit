@@ -133,7 +133,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ setLoading }) => {
         <span className="bg-gray-100 text-gray-500 px-2 py-2 rounded-l-md">
           https://github.com/
         </span>
-        <div>
+        <div className="relative w-full">
           <input
             type="text"
             placeholder="Doarakko/git-first-commit"
@@ -141,7 +141,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ setLoading }) => {
             onKeyDown={handleKeyDown}
             onChange={handleInputChange}
             onFocus={() => setError(null)}
-            className="w-full px-2 py-2 placeholder-gray-500 text-gray-700 rounded-md focus:outline-hidden focus:ring-blue-500 focus:border-blue-500 focus:z-10 bg-white"
+            className="w-full px-2 py-2 placeholder-gray-500 text-gray-700 rounded-md focus:outline-none bg-white"
           />
           {suggestions.length > 0 && (
             <ul className="absolute bg-white border border-gray-300 rounded-md mt-1 z-10">
