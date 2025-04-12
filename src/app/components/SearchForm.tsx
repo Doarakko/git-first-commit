@@ -128,7 +128,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ setLoading }) => {
   };
 
   return (
-    <div className="max-w-md w-full sm:w-xs md:w-sm lg:w-lg">
+    <div className="max-w-md w-xs sm:w-md">
       <div className="flex items-center border border-gray-300 rounded-md">
         <span className="bg-gray-100 text-gray-500 px-2 py-2 rounded-l-md">
           https://github.com/
