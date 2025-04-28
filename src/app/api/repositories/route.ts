@@ -1,4 +1,7 @@
-import { GITHUB_REPOSITORY_NAME_REGEX, GITHUB_REPOSITORY_PATH_REGEX } from "@/constants";
+import {
+  GITHUB_REPOSITORY_NAME_REGEX,
+  GITHUB_REPOSITORY_PATH_REGEX,
+} from "@/constants";
 import { GitHubRepository } from "@/db";
 import { getRequestContext } from "@cloudflare/next-on-pages";
 import { NextResponse } from "next/server";
@@ -12,7 +15,11 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const queryParam = searchParams.get("q")?.toLowerCase();
-    if (queryParam && !GITHUB_REPOSITORY_NAME_REGEX.test(queryParam) && !GITHUB_REPOSITORY_PATH_REGEX.test(queryParam)) {
+    if (
+      queryParam &&
+      !GITHUB_REPOSITORY_NAME_REGEX.test(queryParam) &&
+      !GITHUB_REPOSITORY_PATH_REGEX.test(queryParam)
+    ) {
       return NextResponse.json(
         { error: "Invalid query parameter" },
         { status: 400 },
