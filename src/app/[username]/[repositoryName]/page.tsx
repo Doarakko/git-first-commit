@@ -111,7 +111,7 @@ export default async function Page(props: {
           </a>
         </h1>
       </div>
-      <div className="w-full max-w-4xl mx-auto pl-4">
+      <div className="w-full max-w-4xl mx-auto pl-2">
         <p className="text-gray-500 pb-2">{repository.description}</p>
       </div>
       <div className="w-full max-w-4xl mx-auto">
@@ -121,23 +121,9 @@ export default async function Page(props: {
           <p className="text-gray-700">This repository has no commits.</p>
         )}
       </div>
-      <div className="w-full max-w-4xl mx-auto pl-4">
-        <p className="text-gray-500 pt-4">
-          If you find any errors in your search results, please report them via{" "}
-          <a
-            href="https://github.com/Doarakko/git-first-commit/issues/10"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-gray-700"
-          >
-            GitHub Issue
-          </a>
-          .
-        </p>
-      </div>
       <div>
         <div className=" max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold pb-2 pt-12 text-left">Deepdive</h2>
+          <h2 className="text-xl font-bold pb-2 pt-8 text-left">Deepdive</h2>
         </div>
         <div className="bg-black text-white p-4 rounded-md shadow-md w-full max-w-4xl mx-auto">
           <pre className="whitespace-pre-wrap break-words">
@@ -150,7 +136,7 @@ export default async function Page(props: {
       </div>
       <div>
         <div className=" max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold pt-12 pb-2 text-left">Featured</h2>
+          <h2 className="text-xl font-bold pt-8 pb-2 text-left">Featured</h2>
         </div>
         <div className="flex justify-center w-full max-w-4xl mx-auto pb-12">
           {repositories.length > 0 && (
