@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "@cloudflare/next-on-pages": "^1.13.11",
+    "@cloudflare/next-on-pages": "^1.13.12",
     "@cloudflare/workers-types": "^4.20240909.0",
     "@octokit/types": "^14.0.0",
     "@tailwindcss/postcss": "^4.0.15",
