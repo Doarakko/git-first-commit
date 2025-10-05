@@ -34,7 +34,7 @@ export async function GET(request: Request) {
     }
 
     const limitParam = searchParams.get("limit");
-    const limit = limitParam ? Number.parseInt(limitParam) : defaultLimit;
+    const limit = limitParam ? Number.parseInt(limitParam, 10) : defaultLimit;
     if (limit > maxLimit) {
       return NextResponse.json(
         { error: "Invalid limit parameter" },
