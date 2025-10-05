@@ -7,9 +7,6 @@ import { GITHUB_REPOSITORY_NAME_REGEX } from "@/constants";
 
 export const runtime = "edge";
 
-// https://docs.github.com/ja/rest/commits/commits?apiVersion=2022-11-28#list-commits
-const _startDate = new Date(Date.UTC(1970, 0, 1));
-
 const defaultCommitLimit = 1;
 
 export async function GET(request: Request) {
