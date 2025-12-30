@@ -5,8 +5,6 @@ import { GitHub } from "@/github";
 import { GitHubRepository } from "@/db";
 import { GITHUB_REPOSITORY_NAME_REGEX } from "@/constants";
 
-export const runtime = "edge";
-
 const defaultCommitLimit = 1;
 
 export async function GET(request: Request) {

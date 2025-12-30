@@ -6,8 +6,6 @@ import { GitHubRepository } from "@/db";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { NextResponse } from "next/server";
 
-export const runtime = "edge";
-
 const defaultLimit = 9;
 const maxLimit = 21;
 
