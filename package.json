@@ -10,7 +10,7 @@
     "lint": "npx biome lint",
     "pages:build": "npx @opennextjs/cloudflare build",
     "preview": "npx @opennextjs/cloudflare preview",
-    "deploy": "npx @opennextjs/cloudflare build && npx @opennextjs/cloudflare deploy",
+    "deploy": "npx @opennextjs/cloudflare build && npx @opennextjs/cloudflare deploy --env production",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv env.d.ts",
     "d1:execute": "wrangler d1 execute git-first-commit --local --file=./migrations/schema.sql",
     "d1:execute-prd": "wrangler d1 execute git-first-commit --remote --file=./migrations/schema.sql"
