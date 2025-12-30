@@ -1,72 +1,62 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import CommitCard from "@/components/CommitCard";
 import RepositoryCardList from "@/components/RepositoryCardList";
-import { DEFAULT_METADATA } from "@/constants";
 import type { Commit, Repository } from "@/types";
-import type { Metadata } from "next";
 
-type Props = {
-  params: Promise<{ username: string; repositoryName: string }>;
-};
+export default function Page() {
+  const params = useParams<{ username: string; repositoryName: string }>();
+  const [repository, setRepository] = useState<Repository | null>(null);
+  const [commit, setCommit] = useState<Commit | null>(null);
+  const [repositories, setRepositories] = useState<Repository[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { username, repositoryName } = await params;
-  const response = await fetch(
-    `${process.env.PUBLIC_URL}/api/usernames/${username}/repositories/${repositoryName}/commits`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    },
-  );
-  if (!response.ok) {
-    return DEFAULT_METADATA;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch featured repositories
+        const repoResponse = await fetch("/api/repositories?limit=12");
+        if (repoResponse.ok) {
+          const repoData: { repositories: Repository[] } = await repoResponse.json();
+          setRepositories(repoData.repositories ?? []);
+        }
+
+        // Fetch repository commits
+        const response = await fetch(
+          `/api/usernames/${params.username}/repositories/${params.repositoryName}/commits`
+        );
+        if (!response.ok) {
+          setNotFound(true);
+          setLoading(false);
+          return;
+        }
+
+        const data: { repository: Repository; commits: Commit[] } = await response.json();
+        setRepository(data.repository);
+        setCommit(data.commits?.[0] ?? null);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setNotFound(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [params.username, params.repositoryName]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <p className="text-gray-700">Loading...</p>
+      </div>
+    );
   }
-  const json: { repository: Repository } = await response.json();
 
-  return {
-    ...DEFAULT_METADATA,
-    title: `${username}/${repositoryName}`,
-    description: `This is the first commit of ${username}/${repositoryName}. ${username}/${repositoryName} is ${json.repository.description}`,
-    openGraph: {
-      ...DEFAULT_METADATA.openGraph,
-      title: `${username}/${repositoryName}`,
-      description: `This is the first commit of ${username}/${repositoryName}. ${username}/${repositoryName} is ${json.repository.description}`,
-    },
-  };
-}
-
-export default async function Page(props: {
-  params: Promise<{ username: string; repositoryName: string }>;
-}) {
-  console.log("Page rendering, PUBLIC_URL:", process.env.PUBLIC_URL);
-  const fetchUrl = `${process.env.PUBLIC_URL}/api/repositories?limit=12`;
-  console.log("Fetching repositories from:", fetchUrl);
-
-  const repositoryResponse = await fetch(fetchUrl);
-  console.log("Repository response status:", repositoryResponse.status);
-
-  if (!repositoryResponse.ok) {
-    const errorText = await repositoryResponse.text();
-    console.error("Failed to fetch repositories, status:", repositoryResponse.status, "body:", errorText);
-    return;
-  }
-  const repositoryJson: { repositories: Repository[] } =
-    await repositoryResponse.json();
-  const repositories = repositoryJson.repositories ?? [];
-
-  const params = await props.params;
-  const response = await fetch(
-    `${process.env.PUBLIC_URL}/api/usernames/${params.username}/repositories/${params.repositoryName}/commits`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    },
-  );
-
-  if (!response.ok) {
+  if (notFound || !repository) {
     return (
       <div className="min-h-screen bg-gray-100 flex flex-col py-12 px-4 sm:px-6 md:px-8 lg:px-10 text-gray-700">
         <div className="w-full max-w-4xl mx-auto text-center">
@@ -89,11 +79,6 @@ export default async function Page(props: {
       </div>
     );
   }
-
-  const json: { repository: Repository; commits: Commit[] } =
-    await response.json();
-  const { repository, commits } = json;
-  const commit = commits[0];
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col py-12 px-4 sm:px-6 md:px-8 lg:px-10 text-gray-700">
