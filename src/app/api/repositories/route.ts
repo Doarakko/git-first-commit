@@ -11,6 +11,7 @@ const maxLimit = 21;
 
 export async function GET(request: Request) {
   try {
+    console.log("GET /api/repositories called");
     const { searchParams } = new URL(request.url);
     const queryParam = searchParams.get("q")?.toLowerCase();
     if (
@@ -24,7 +25,9 @@ export async function GET(request: Request) {
       );
     }
 
+    console.log("Getting Cloudflare context...");
     const { env } = await getCloudflareContext();
+    console.log("env.DB:", env.DB ? "exists" : "undefined");
     const githubRepository = new GitHubRepository(env.DB);
     if (queryParam) {
       const repositories =
