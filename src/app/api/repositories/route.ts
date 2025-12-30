@@ -3,7 +3,7 @@ import {
   GITHUB_REPOSITORY_PATH_REGEX,
 } from "@/constants";
 import { GitHubRepository } from "@/db";
-import { getRequestContext } from "@cloudflare/next-on-pages";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { NextResponse } from "next/server";
 
 export const runtime = "edge";
@@ -26,7 +26,8 @@ export async function GET(request: Request) {
       );
     }
 
-    const githubRepository = new GitHubRepository(getRequestContext().env.DB);
+    const { env } = await getCloudflareContext();
+    const githubRepository = new GitHubRepository(env.DB);
     if (queryParam) {
       const repositories =
         await githubRepository.SearchRepositories(queryParam);
