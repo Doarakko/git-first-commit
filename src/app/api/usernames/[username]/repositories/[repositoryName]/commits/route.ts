@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getRequestContext } from "@cloudflare/next-on-pages";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { RequestError } from "@octokit/request-error";
 import { GitHub } from "@/github";
 import { GitHubRepository } from "@/db";
@@ -29,7 +29,8 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "Invalid name" }, { status: 400 });
     }
 
-    const githubRepository = new GitHubRepository(getRequestContext().env.DB);
+    const { env } = await getCloudflareContext();
+    const githubRepository = new GitHubRepository(env.DB);
     const response = await githubRepository.GetRepositoryWithCommits(
       username,
       repositoryName,
