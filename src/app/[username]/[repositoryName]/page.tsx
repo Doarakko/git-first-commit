@@ -39,11 +39,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page(props: {
   params: Promise<{ username: string; repositoryName: string }>;
 }) {
-  const repositoryResponse = await fetch(
-    `${process.env.PUBLIC_URL}/api/repositories?limit=12`,
-  );
+  console.log("Page rendering, PUBLIC_URL:", process.env.PUBLIC_URL);
+  const fetchUrl = `${process.env.PUBLIC_URL}/api/repositories?limit=12`;
+  console.log("Fetching repositories from:", fetchUrl);
+
+  const repositoryResponse = await fetch(fetchUrl);
+  console.log("Repository response status:", repositoryResponse.status);
+
   if (!repositoryResponse.ok) {
-    console.error("Failed to fetch repositories");
+    const errorText = await repositoryResponse.text();
+    console.error("Failed to fetch repositories, status:", repositoryResponse.status, "body:", errorText);
     return;
   }
   const repositoryJson: { repositories: Repository[] } =

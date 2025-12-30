@@ -91,7 +91,10 @@ export async function GET(
       }
     }
 
-    console.error(error);
+    console.error("Failed to fetch repository data:", error);
+    console.error("Error name:", error instanceof Error ? error.name : "unknown");
+    console.error("Error message:", error instanceof Error ? error.message : String(error));
+    console.error("Error stack:", error instanceof Error ? error.stack : "no stack");
     return NextResponse.json(
       { error: "Failed to fetch repository data" },
       { status: 500 },
