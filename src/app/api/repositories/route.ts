@@ -11,7 +11,6 @@ const maxLimit = 21;
 
 export async function GET(request: Request) {
   try {
-    console.log("GET /api/repositories called");
     const { searchParams } = new URL(request.url);
     const queryParam = searchParams.get("q")?.toLowerCase();
     if (
@@ -25,9 +24,7 @@ export async function GET(request: Request) {
       );
     }
 
-    console.log("Getting Cloudflare context...");
     const { env } = await getCloudflareContext();
-    console.log("env.DB:", env.DB ? "exists" : "undefined");
     const githubRepository = new GitHubRepository(env.DB);
     if (queryParam) {
       const repositories =
@@ -47,10 +44,7 @@ export async function GET(request: Request) {
     const repositories = await githubRepository.GetRandomRepositories(limit);
     return NextResponse.json({ repositories });
   } catch (error) {
-    console.error("Failed to fetch repositories:", error);
-    console.error("Error name:", error instanceof Error ? error.name : "unknown");
-    console.error("Error message:", error instanceof Error ? error.message : String(error));
-    console.error("Error stack:", error instanceof Error ? error.stack : "no stack");
+    console.error(error);
     return NextResponse.json(
       { error: "Failed to fetch repositories" },
       { status: 500 },
