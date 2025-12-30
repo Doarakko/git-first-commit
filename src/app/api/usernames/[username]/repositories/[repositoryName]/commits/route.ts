@@ -7,11 +7,12 @@ import { GITHUB_REPOSITORY_NAME_REGEX } from "@/constants";
 
 const defaultCommitLimit = 1;
 
-export async function GET(request: Request) {
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ username: string; repositoryName: string }> },
+) {
   try {
-    const { searchParams } = new URL(request.url);
-    const username = searchParams.get("username");
-    const repositoryName = searchParams.get("repositoryName");
+    const { username, repositoryName } = await params;
 
     if (!username || !repositoryName) {
       return NextResponse.json(
