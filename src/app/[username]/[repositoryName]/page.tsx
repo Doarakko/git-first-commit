@@ -4,8 +4,6 @@ import { DEFAULT_METADATA } from "@/constants";
 import type { Commit, Repository } from "@/types";
 import type { Metadata } from "next";
 
-export const runtime = "edge";
-
 type Props = {
   params: Promise<{ username: string; repositoryName: string }>;
 };
