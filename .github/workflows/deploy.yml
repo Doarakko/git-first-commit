@@ -14,16 +14,14 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Install dependencies
-        run: |
-          npm install
+        run: npm ci
 
       - name: Build
-        run: |
-          npm run pages:build
+        run: npm run pages:build
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy .vercel/output/static
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy .open-next/assets --project-name git-first-commit
