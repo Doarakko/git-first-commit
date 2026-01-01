@@ -54,7 +54,7 @@ export default function Page() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 animate-fade-in" />
+        <div className="loader rounded-full border-4 border-t-4 border-gray-200 h-12 w-12" />
       </div>
     );
   }
