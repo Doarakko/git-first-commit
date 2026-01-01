@@ -9,16 +9,13 @@ import {
 } from "@/constants";
 import type { Repository } from "@/types";
 
-interface SearchFormProps {
-  setLoading: (loading: boolean) => void;
-}
-
-const SearchForm: React.FC<SearchFormProps> = ({ setLoading }) => {
+const SearchForm: React.FC = () => {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [suggestions, setSuggestions] = useState<Repository[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [loading, setLoading] = useState(false);
 
   const handleKeyDown = async (
     event: React.KeyboardEvent<HTMLInputElement>,
@@ -129,7 +126,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ setLoading }) => {
         <span className="bg-gray-100 text-gray-500 px-2 py-2 rounded-l-md">
           https://github.com/
         </span>
-        <div className="relative w-full">
+        <div className="relative w-full flex items-center">
           <input
             type="text"
             placeholder="Doarakko/git-first-commit"
@@ -137,10 +134,16 @@ const SearchForm: React.FC<SearchFormProps> = ({ setLoading }) => {
             onKeyDown={handleKeyDown}
             onChange={handleInputChange}
             onFocus={() => setError(null)}
-            className="w-full px-2 py-2 placeholder-gray-500 text-gray-700 rounded-md focus:outline-none bg-white"
+            disabled={loading}
+            className="w-full px-2 py-2 placeholder-gray-500 text-gray-700 rounded-md focus:outline-none bg-white disabled:opacity-50"
           />
-          {suggestions.length > 0 && (
-            <ul className="absolute bg-white border border-gray-300 rounded-md mt-1 z-10 shadow-lg animate-slide-down">
+          {loading && (
+            <div className="absolute right-2">
+              <div className="loader rounded-full border-2 border-t-2 border-gray-200 h-4 w-4" />
+            </div>
+          )}
+          {suggestions.length > 0 && !loading && (
+            <ul className="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-md mt-1 z-10 shadow-lg animate-slide-down">
               {suggestions.map((repo, index) => (
                 // biome-ignore lint: Todo
                 <li
@@ -155,7 +158,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ setLoading }) => {
             </ul>
           )}
           {error && (
-            <div className="text-red-500 text-sm pt-6 absolute animate-fade-in">
+            <div className="text-red-500 text-sm absolute top-full left-0 pt-1 animate-fade-in">
               {error}
             </div>
           )}
