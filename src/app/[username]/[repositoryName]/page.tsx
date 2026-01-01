@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import "@/globals.css";
 import CommitCard from "@/components/CommitCard";
 import RepositoryCardList from "@/components/RepositoryCardList";
 import type { Commit, Repository } from "@/types";
@@ -53,14 +54,14 @@ export default function Page() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <p className="text-gray-700">Loading...</p>
+        <div className="loader rounded-full border-4 border-t-4 border-gray-200 h-12 w-12" />
       </div>
     );
   }
 
   if (notFound || !repository) {
     return (
-      <div className="min-h-screen bg-gray-100 flex flex-col py-12 px-4 sm:px-6 md:px-8 lg:px-10 text-gray-700">
+      <div className="min-h-screen bg-gray-100 flex flex-col py-12 px-4 sm:px-6 md:px-8 lg:px-10 text-gray-700 animate-fade-in-up">
         <div className="w-full max-w-4xl mx-auto text-center">
           <h1 className="text-2xl font-bold mb-4">
             {params.username}/{params.repositoryName} is not found.
@@ -83,7 +84,7 @@ export default function Page() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col py-12 px-4 sm:px-6 md:px-8 lg:px-10 text-gray-700">
+    <div className="min-h-screen bg-gray-100 flex flex-col py-12 px-4 sm:px-6 md:px-8 lg:px-10 text-gray-700 animate-fade-in-up">
       <div className="w-full max-w-4xl mx-auto">
         <h1 className="text-2xl font-bold flex items-center gap-2 pb-2">
           <img
@@ -95,7 +96,7 @@ export default function Page() {
             href={`https://${repository.platformName}.com/${repository.username}/${repository.name}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-gray-900"
+            className="hover:text-gray-900 transition-colors duration-200 ease-out"
           >
             {repository.username}/{repository.name}
           </a>

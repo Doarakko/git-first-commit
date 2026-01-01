@@ -9,8 +9,8 @@
 }
 
 .loader {
-  border-top-color: #3498db;
-  animation: spin 1s ease-in-out infinite;
+  border-top-color: #6b7280;
+  animation: spin 0.8s ease-in-out infinite, fadeIn 0.2s ease-out;
 }
 
 @keyframes spin {
@@ -59,7 +59,7 @@
 }
 
 .animate-fade-in-up {
-  animation: fadeInUp 0.3s ease-out;
+  animation: fadeInUp 0.2s ease-out;
 }
 
 /*
