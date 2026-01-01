@@ -20,13 +20,14 @@ export default function Page() {
         // Fetch featured repositories
         const repoResponse = await fetch("/api/repositories?limit=12");
         if (repoResponse.ok) {
-          const repoData: { repositories: Repository[] } = await repoResponse.json();
+          const repoData: { repositories: Repository[] } =
+            await repoResponse.json();
           setRepositories(repoData.repositories ?? []);
         }
 
         // Fetch repository commits
         const response = await fetch(
-          `/api/usernames/${params.username}/repositories/${params.repositoryName}/commits`
+          `/api/usernames/${params.username}/repositories/${params.repositoryName}/commits`,
         );
         if (!response.ok) {
           setNotFound(true);
@@ -34,7 +35,8 @@ export default function Page() {
           return;
         }
 
-        const data: { repository: Repository; commits: Commit[] } = await response.json();
+        const data: { repository: Repository; commits: Commit[] } =
+          await response.json();
         setRepository(data.repository);
         setCommit(data.commits?.[0] ?? null);
       } catch (error) {

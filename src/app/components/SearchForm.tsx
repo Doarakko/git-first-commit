@@ -140,12 +140,12 @@ const SearchForm: React.FC<SearchFormProps> = ({ setLoading }) => {
             className="w-full px-2 py-2 placeholder-gray-500 text-gray-700 rounded-md focus:outline-none bg-white"
           />
           {suggestions.length > 0 && (
-            <ul className="absolute bg-white border border-gray-300 rounded-md mt-1 z-10">
+            <ul className="absolute bg-white border border-gray-300 rounded-md mt-1 z-10 shadow-lg animate-slide-down">
               {suggestions.map((repo, index) => (
                 // biome-ignore lint: Todo
                 <li
                   key={repo.id}
-                  className={`text-gray-700 p-2 cursor-pointer px-4 ${selectedIndex === index ? "bg-gray-100" : ""}`}
+                  className={`text-gray-700 p-2 cursor-pointer px-4 transition-colors duration-200 ease-out ${selectedIndex === index ? "bg-gray-100" : "hover:bg-gray-50"}`}
                   onClick={() => handleSuggestionClick(repo)}
                   onMouseEnter={() => setSelectedIndex(index)}
                 >
@@ -155,7 +155,9 @@ const SearchForm: React.FC<SearchFormProps> = ({ setLoading }) => {
             </ul>
           )}
           {error && (
-            <div className="text-red-500 text-sm pt-6 absolute">{error}</div>
+            <div className="text-red-500 text-sm pt-6 absolute animate-fade-in">
+              {error}
+            </div>
           )}
         </div>
       </div>
