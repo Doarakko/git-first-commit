@@ -10,7 +10,7 @@ const Header: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 text-gray-700">
-        <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32 mb-4" />
+        <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32 mb-4 animate-fade-in" />
       </div>
     );
   }
@@ -19,7 +19,7 @@ const Header: React.FC = () => {
     <header className="py-4 px-6">
       <div className="flex justify-between items-center">
         <h1 className="text-xl font-semibold text-gray-700">
-          <a href="/" className="hover:text-gray-900">
+          <a href="/" className="hover:text-gray-900 transition-colors duration-200 ease-out">
             Git First Commit
           </a>
         </h1>
@@ -33,7 +33,7 @@ const Header: React.FC = () => {
             href="https://github.com/Doarakko/git-first-commit"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-2"
+            className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-2 transition-colors duration-200 ease-out"
           >
             <svg
               className="w-5 h-5"
