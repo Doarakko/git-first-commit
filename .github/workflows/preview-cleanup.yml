@@ -1,0 +1,22 @@
+name: Preview Cleanup
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Delete Preview Worker
+        run: |
+          PREVIEW_NAME="git-first-commit-pr-${{ github.event.pull_request.number }}"
+
+          # Delete the preview worker
+          curl -X DELETE \
+            "https://api.cloudflare.com/client/v4/accounts/${{ secrets.CLOUDFLARE_ACCOUNT_ID }}/workers/scripts/$PREVIEW_NAME" \
+            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
+            -H "Content-Type: application/json"
+
+          echo "Deleted preview worker: $PREVIEW_NAME"
