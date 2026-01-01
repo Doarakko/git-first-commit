@@ -13,7 +13,7 @@ const CommitCard: React.FC<CommitCardProps> = ({ commit }) => {
       target="_blank"
       rel="noopener noreferrer"
     >
-      <div className="border p-4 rounded-lg min-w-[300px] sm:min-w-[400px] md:min-w-[500px] lg:min-w-[600px] bg-white text-gray-700 break-words shadow-sm group-hover:shadow-md group-hover:border-gray-400 transition-all duration-200">
+      <div className="border p-4 rounded-lg min-w-[300px] sm:min-w-[400px] md:min-w-[500px] lg:min-w-[600px] bg-white text-gray-700 break-words shadow-sm group-hover:shadow-md group-hover:border-gray-400 transition-all duration-200 ease-out">
         <div className="flex items-center gap-4 mb-2">
           {commit.authorImageUrl && commit.authorId ? (
             <>

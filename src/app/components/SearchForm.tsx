@@ -145,7 +145,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ setLoading }) => {
                 // biome-ignore lint: Todo
                 <li
                   key={repo.id}
-                  className={`text-gray-700 p-2 cursor-pointer px-4 transition-colors duration-150 ${selectedIndex === index ? "bg-gray-100" : "hover:bg-gray-50"}`}
+                  className={`text-gray-700 p-2 cursor-pointer px-4 transition-colors duration-200 ease-out ${selectedIndex === index ? "bg-gray-100" : "hover:bg-gray-50"}`}
                   onClick={() => handleSuggestionClick(repo)}
                   onMouseEnter={() => setSelectedIndex(index)}
                 >
