@@ -10,7 +10,7 @@ const RepositoryCard: React.FC<RepositoryCardProps> = ({ repo }) => {
     <a
       key={repo.id}
       href={`/${repo.username}/${repo.name}`}
-      className="block bg-white shadow-sm rounded-lg hover:shadow-md transition-shadow"
+      className="block bg-white shadow-sm rounded-lg hover:shadow-lg hover:-translate-y-1 transition-all duration-200 ease-out"
     >
       <div className="p-4">
         <div className="flex items-center space-x-3 mb-3">
