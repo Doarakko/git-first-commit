@@ -16,7 +16,7 @@
     "d1:execute-prd": "wrangler d1 execute git-first-commit --remote --file=./migrations/schema.sql"
   },
   "dependencies": {
-    "@next/third-parties": "16.0.1",
+    "@next/third-parties": "16.1.3",
     "@octokit/core": "^6.1.5",
     "next": "16.1.3",
     "react": "19.0.0",
