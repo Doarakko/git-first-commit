@@ -3,6 +3,8 @@ name: Preview Deploy
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+    branches-ignore:
+      - 'dependabot/**'
 
 jobs:
   preview:

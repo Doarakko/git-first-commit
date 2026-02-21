@@ -3,6 +3,8 @@ name: Preview Cleanup
 on:
   pull_request:
     types: [closed]
+    branches-ignore:
+      - 'dependabot/**'
 
 jobs:
   cleanup:
