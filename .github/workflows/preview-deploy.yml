@@ -3,11 +3,10 @@ name: Preview Deploy
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    branches-ignore:
-      - 'dependabot/**'
 
 jobs:
   preview:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
