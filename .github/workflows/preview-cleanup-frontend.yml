@@ -3,11 +3,10 @@ name: Preview Cleanup
 on:
   pull_request:
     types: [closed]
-    branches-ignore:
-      - 'dependabot/**'
 
 jobs:
   cleanup:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
 
     steps:
