@@ -23,8 +23,8 @@
     "react-dom": "19.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.2.5",
-    "@cloudflare/workers-types": "^4.20240909.0",
+    "@biomejs/biome": "2.4.4",
+    "@cloudflare/workers-types": "^4.20260301.1",
     "@octokit/types": "^16.0.0",
     "@opennextjs/cloudflare": "^1.16.5",
     "@tailwindcss/postcss": "^4.0.15",
