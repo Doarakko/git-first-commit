@@ -4,15 +4,42 @@ on:
   pull_request:
     types: [closed]
 
+permissions:
+  contents: read
+
 jobs:
   cleanup:
+    # Mirrors the condition in preview-deploy.yml, but cannot match it exactly:
+    # on `closed` the actor is whoever closed the pull request, so a Dependabot
+    # pull request merged by a human reaches this job even though the deploy was
+    # skipped when it opened. That case is handled in the step below — an `if:`
+    # cannot ask whether a preview was ever built.
     if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
 
+    env:
+      PR: ${{ github.event.pull_request.number }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
     steps:
       - name: Delete Preview Worker
-        uses: cloudflare/wrangler-action@ebbaa1584979971c8614a24965b4405ff95890e0 # v4.0.0
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: delete --name "git-first-commit-pr-${{ github.event.pull_request.number }}" --force
+        run: |
+          set -uo pipefail
+          worker="git-first-commit-pr-${PR}"
+          if out=$(npx --yes wrangler delete --name "${worker}" --force 2>&1); then
+            echo "deleted ${worker}"
+            exit 0
+          fi
+          # 10090 is "this Worker does not exist on this account", which is what
+          # a pull request that never built a preview looks like — the expected
+          # outcome, not a failure. Anything else, an expired token or a missing
+          # permission, still fails the run: those leave the Worker up and need
+          # a human. Every run of this job since it was written has failed on
+          # the first case, which buried the second.
+          if grep -q "code: 10090" <<<"${out}"; then
+            echo "no preview for ${worker}"
+            exit 0
+          fi
+          echo "${out}"
+          exit 1
