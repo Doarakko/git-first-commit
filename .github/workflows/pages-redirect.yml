@@ -1,0 +1,42 @@
+name: Pages Redirect
+
+# The git-first-commit.pages.dev Pages project is no longer the site — it only
+# redirects to the Worker. That redirect used to live nowhere but inside a
+# hand-made Pages deployment from 2025-12-30, so when the account's
+# workers.dev subdomain changed it silently started pointing at a hostname
+# that no longer resolves, and nothing in this repository said so.
+#
+# Keeping pages-redirect/ in git and deploying it from CI makes the redirect
+# target reviewable and reproducible. Change the URL in pages-redirect/_redirects
+# and this workflow ships it.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'pages-redirect/**'
+      - '.github/workflows/pages-redirect.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      # --branch must match the project's production branch (main), otherwise
+      # the upload lands as a preview deployment and git-first-commit.pages.dev
+      # keeps serving the old one.
+      #
+      # wranglerVersion is pinned because nothing here runs `npm ci`; without
+      # it the action installs its own `wrangler@4`, which can resolve to a
+      # different version on every run.
+      - uses: cloudflare/wrangler-action@ebbaa1584979971c8614a24965b4405ff95890e0 # v4.0.0
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: '4.129.0'
+          command: pages deploy pages-redirect --project-name=git-first-commit --branch=main
