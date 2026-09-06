@@ -18,6 +18,13 @@ on:
       - '.github/workflows/pages-redirect.yml'
   workflow_dispatch:
 
+# Deploys must not overtake each other; the last push to land should be what is
+# live. Queued rather than cancelled so a run that is already uploading is not
+# killed halfway.
+concurrency:
+  group: pages-redirect
+  cancel-in-progress: false
+
 permissions:
   contents: read
 
