@@ -1,0 +1,4 @@
+# The Pages project only exists to keep the old git-first-commit.pages.dev URL working.
+# Everything is sent to the Worker, which is where the site actually lives.
+# :splat carries the rest of the path, so deep links survive.
+/*  https://git-first-commit.1o6.workers.dev/:splat  301
