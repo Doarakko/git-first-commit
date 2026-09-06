@@ -16,9 +16,9 @@
     "d1:execute-prd": "wrangler d1 execute git-first-commit --remote --file=./migrations/schema.sql"
   },
   "dependencies": {
-    "@next/third-parties": "16.3.0",
+    "@next/third-parties": "16.3.4",
     "@octokit/core": "^6.1.5",
-    "next": "16.3.0",
+    "next": "16.3.4",
     "react": "19.0.0",
     "react-dom": "19.0.0"
   },
@@ -26,7 +26,7 @@
     "@biomejs/biome": "2.2.5",
     "@cloudflare/workers-types": "^5.20260829.1",
     "@octokit/types": "^17.0.0",
-    "@opennextjs/cloudflare": "^1.17.1",
+    "@opennextjs/cloudflare": "^1.20.6",
     "@tailwindcss/postcss": "^4.0.15",
     "@types/node": "^25",
     "@types/react": "19.0.8",
