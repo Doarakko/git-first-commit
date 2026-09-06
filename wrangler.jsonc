@@ -12,7 +12,7 @@
     "enabled": true
   },
   "vars": {
-    "PUBLIC_URL": "https://git-first-commit.2wua4nlyi4102.workers.dev",
+    "PUBLIC_URL": "https://git-first-commit.1o6.workers.dev",
     "ENV": "production"
   },
   "d1_databases": [
