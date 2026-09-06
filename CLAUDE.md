@@ -6,7 +6,7 @@ This file provides guidance for Claude Code when working with this repository.
 
 **Git First Commit** is a Next.js web application that displays the first commit of GitHub repositories. Users can search for repositories or browse featured ones to see their initial commits.
 
-- **Live URL**: https://git-first-commit.2wua4nlyi4102.workers.dev (Workers deployment)
+- **Live URL**: https://git-first-commit.1o6.workers.dev (Workers deployment)
 - **Legacy URL**: https://git-first-commit.pages.dev (no longer active)
 
 ## Tech Stack

@@ -27,14 +27,14 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy --name "git-first-commit-pr-${{ github.event.pull_request.number }}" --var PUBLIC_URL:"https://git-first-commit-pr-${{ github.event.pull_request.number }}.2wua4nlyi4102.workers.dev" --var ENV:preview
+          command: deploy --name "git-first-commit-pr-${{ github.event.pull_request.number }}" --var PUBLIC_URL:"https://git-first-commit-pr-${{ github.event.pull_request.number }}.1o6.workers.dev" --var ENV:preview
 
       - name: Comment Preview URL on PR
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           script: |
             const prNumber = context.issue.number;
-            const previewUrl = `https://git-first-commit-pr-${prNumber}.2wua4nlyi4102.workers.dev`;
+            const previewUrl = `https://git-first-commit-pr-${prNumber}.1o6.workers.dev`;
             const body = `## 🚀 Preview Deployment
 
             Your preview is ready!
