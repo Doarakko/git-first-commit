@@ -16,17 +16,17 @@
     "d1:execute-prd": "wrangler d1 execute git-first-commit --remote --file=./migrations/schema.sql"
   },
   "dependencies": {
-    "@next/third-parties": "16.3.0",
+    "@next/third-parties": "16.4.0",
     "@octokit/core": "^6.1.5",
-    "next": "16.3.0",
+    "next": "16.4.0",
     "react": "19.0.0",
     "react-dom": "19.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.2.5",
+    "@biomejs/biome": "2.5.11",
     "@cloudflare/workers-types": "^5.20260829.1",
     "@octokit/types": "^17.0.0",
-    "@opennextjs/cloudflare": "^1.17.1",
+    "@opennextjs/cloudflare": "^1.20.11",
     "@tailwindcss/postcss": "^4.0.15",
     "@types/node": "^25",
     "@types/react": "19.0.8",
@@ -34,10 +34,13 @@
     "postcss": "^8",
     "tailwindcss": "^4.1.5",
     "typescript": "^5",
-    "wrangler": "^4.103.0"
+    "wrangler": "^4.151.1"
   },
   "overrides": {
     "@types/react": "19.0.8",
-    "@types/react-dom": "19.0.3"
+    "@types/react-dom": "19.0.3",
+    "@node-minify/core": {
+      "glob": "^10.5.0"
+    }
   }
 }
