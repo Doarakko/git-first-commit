@@ -8,7 +8,7 @@ import { GITHUB_REPOSITORY_NAME_REGEX } from "@/constants";
 const defaultCommitLimit = 1;
 
 export async function GET(
-  request: Request,
+  _request: Request,
   { params }: { params: Promise<{ username: string; repositoryName: string }> },
 ) {
   try {
