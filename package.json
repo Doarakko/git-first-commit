@@ -18,7 +18,7 @@
   "dependencies": {
     "@next/third-parties": "16.3.8",
     "@octokit/core": "^6.1.5",
-    "next": "16.3.8",
+    "next": "16.4.3",
     "react": "19.0.0",
     "react-dom": "19.0.0"
   },
