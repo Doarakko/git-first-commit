@@ -16,7 +16,7 @@ cd git-first-commit
 cp .env.local.example .env.local
 
 npm i
-npm run d1:execute
+npm run d1:migrate
 npm run dev
 ```
 

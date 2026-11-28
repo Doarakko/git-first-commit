@@ -39,8 +39,8 @@ npm run lint             # Run oxlint
 npm run format           # Format code with oxfmt
 
 # Database
-npm run d1:execute       # Execute migrations locally
-npm run d1:execute-prd   # Execute migrations in production
+npm run d1:migrate         # Apply migrations to local D1
+npm run d1:migrate:remote  # Apply migrations to production D1 (CI does this on deploy)
 npm run cf-typegen       # Generate Cloudflare types
 ```
 
@@ -98,6 +98,14 @@ const db = env.DB;  // D1 database
 - `PUBLIC_URL`: Base URL for internal API calls (set in wrangler.jsonc)
 - `CLOUDFLARE_API_TOKEN`: For deployment (GitHub Actions secret)
 - `CLOUDFLARE_ACCOUNT_ID`: For deployment (GitHub Actions secret)
+
+### D1 Migrations
+
+Schema changes are numbered files in `migrations/` (wrangler D1 migrations).
+`deploy.yml` runs `npm run d1:migrate:remote` right before the deploy, in the same
+job, so merging a migration to main is what applies it to production. Never edit
+an applied migration; add a new file. `0001_init.sql` uses `IF NOT EXISTS`
+because production predates migration tracking.
 
 ### Important Constraints
 
