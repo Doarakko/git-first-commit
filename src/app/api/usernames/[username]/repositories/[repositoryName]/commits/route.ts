@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { RequestError } from "@octokit/request-error";
-import { GitHub } from "@/github";
+import { GitHub, GitHubRequestError } from "@/github";
 import { GitHubRepository } from "@/db";
 import { GITHUB_REPOSITORY_NAME_REGEX } from "@/constants";
 
@@ -74,7 +73,7 @@ export async function GET(
       commits: firstCommits.slice,
     });
   } catch (error) {
-    if (error instanceof RequestError) {
+    if (error instanceof GitHubRequestError) {
       if (error.status === 404) {
         return NextResponse.json(
           { error: "Repository not found" },
