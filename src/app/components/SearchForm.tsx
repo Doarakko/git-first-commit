@@ -145,7 +145,7 @@ const SearchForm: React.FC = () => {
           {suggestions.length > 0 && !loading && (
             <ul className="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-md mt-1 z-10 shadow-lg animate-slide-down">
               {suggestions.map((repo, index) => (
-                // biome-ignore lint: Todo
+                // oxlint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions -- Todo
                 <li
                   key={repo.id}
                   className={`text-gray-700 p-2 cursor-pointer px-4 transition-colors duration-200 ease-out ${selectedIndex === index ? "bg-gray-100" : "hover:bg-gray-50"}`}

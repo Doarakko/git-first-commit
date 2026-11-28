@@ -6,8 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "format": "npx biome format --write",
-    "lint": "npx biome lint",
+    "format": "oxfmt",
+    "lint": "oxlint",
     "pages:build": "npx @opennextjs/cloudflare build",
     "preview": "npx @opennextjs/cloudflare preview",
     "deploy": "npx @opennextjs/cloudflare build && npx @opennextjs/cloudflare deploy",
@@ -23,7 +23,6 @@
     "react-dom": "19.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.11",
     "@cloudflare/workers-types": "^5.20261120.1",
     "@octokit/types": "^18.0.0",
     "@opennextjs/cloudflare": "^1.20.18",
@@ -31,6 +30,8 @@
     "@types/node": "^25.9.9",
     "@types/react": "19.0.8",
     "@types/react-dom": "19.0.3",
+    "oxfmt": "0.80.0",
+    "oxlint": "1.95.0",
     "postcss": "^8.5.33",
     "tailwindcss": "^4.1.5",
     "typescript": "^7.0.2",
