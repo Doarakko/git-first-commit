@@ -13,7 +13,8 @@ updates:
           - "@types/*"
           - "@cloudflare/workers-types"
           - "@octokit/types"
-          - "@biomejs/*"
+          - "oxlint"
+          - "oxfmt"
 
   - package-ecosystem: "github-actions"
     directory: "/"

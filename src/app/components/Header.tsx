@@ -8,7 +8,10 @@ const Header: React.FC = () => {
     <header className="py-4 px-6">
       <div className="flex justify-between items-center">
         <h1 className="text-xl font-semibold text-gray-700">
-          <a href="/" className="hover:text-gray-900 transition-colors duration-200 ease-out">
+          <a
+            href="/"
+            className="hover:text-gray-900 transition-colors duration-200 ease-out"
+          >
             Git First Commit
           </a>
         </h1>

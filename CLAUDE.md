@@ -15,7 +15,7 @@ This file provides guidance for Claude Code when working with this repository.
 - **Deployment**: Cloudflare Workers via `@opennextjs/cloudflare`
 - **Database**: Cloudflare D1 (SQLite-based)
 - **Styling**: Tailwind CSS 4
-- **Linting/Formatting**: Biome
+- **Linting/Formatting**: oxlint (`.oxlintrc.json`) / oxfmt (`.oxfmtrc.json`)
 - **GitHub API**: Octokit
 
 ## Commands
@@ -35,8 +35,8 @@ npm run deploy           # Build and deploy to Cloudflare Workers
 npm run preview          # Local preview with OpenNext
 
 # Code Quality
-npm run lint             # Run Biome linter
-npm run format           # Format code with Biome
+npm run lint             # Run oxlint
+npm run format           # Format code with oxfmt
 
 # Database
 npm run d1:execute       # Execute migrations locally
